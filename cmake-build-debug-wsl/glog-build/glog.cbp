@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="glog"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\thirdparty\;CMake Files\thirdparty\googletest\;CMake Files\thirdparty\googletest\cmake\;CMake Files\thirdparty\glog\;CMake Files\thirdparty\glog\cmake\;CMake Files\thirdparty\glog\src\;CMake Files\thirdparty\glog\src\glog\;CMake Files\src\;CMake Files\test\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Experimental">
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 Experimental"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Nightly">
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 Nightly"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Continuous">
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 Continuous"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glogbase">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/glogbase.objlib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGOOGLE_GLOG_IS_A_DLL"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 glogbase"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glogbase/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/glogbase.objlib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGOOGLE_GLOG_IS_A_DLL"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 glogbase/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glog">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/libglogd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 glog"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glog/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/libglogd.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 glog/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glogtest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/libglogtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 glogtest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glogtest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/libglogtestd.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 glogtest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="logging_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/logging_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 logging_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="logging_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/logging_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 logging_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="stl_logging_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/stl_logging_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGLOG_STL_LOGGING_FOR_UNORDERED"/>
+					<Add option="-DGLOG_STL_LOGGING_FOR_TR1_UNORDERED"/>
+					<Add option="-DGLOG_STL_LOGGING_FOR_EXT_HASH"/>
+					<Add option="-DGLOG_STL_LOGGING_FOR_EXT_SLIST"/>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 stl_logging_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="stl_logging_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/stl_logging_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DGLOG_STL_LOGGING_FOR_UNORDERED"/>
+					<Add option="-DGLOG_STL_LOGGING_FOR_TR1_UNORDERED"/>
+					<Add option="-DGLOG_STL_LOGGING_FOR_EXT_HASH"/>
+					<Add option="-DGLOG_STL_LOGGING_FOR_EXT_SLIST"/>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 stl_logging_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="symbolize_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/symbolize_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 symbolize_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="symbolize_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/symbolize_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 symbolize_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="demangle_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/demangle_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 demangle_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="demangle_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/demangle_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 demangle_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="stacktrace_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/stacktrace_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 stacktrace_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="stacktrace_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/stacktrace_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 stacktrace_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="utilities_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/utilities_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 utilities_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="utilities_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/utilities_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 utilities_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="signalhandler_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/signalhandler_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 signalhandler_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="signalhandler_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/signalhandler_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 signalhandler_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup_immediately_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/cleanup_immediately_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 cleanup_immediately_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup_immediately_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/cleanup_immediately_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 cleanup_immediately_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup_with_absolute_prefix_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/cleanup_with_absolute_prefix_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 cleanup_with_absolute_prefix_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup_with_absolute_prefix_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/cleanup_with_absolute_prefix_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 cleanup_with_absolute_prefix_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup_with_relative_prefix_unittest">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/cleanup_with_relative_prefix_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 cleanup_with_relative_prefix_unittest"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup_with_relative_prefix_unittest/fast">
+				<Option output="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/cleanup_with_relative_prefix_unittest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DENABLE_OUTPUT_DBG_INFO"/>
+					<Add option="-DGLOG_NO_SYMBOLIZE_DETECTION"/>
+					<Add option="-DGLOG_STATIC_DEFINE"/>
+					<Add directory="/mnt/d/LM/Database/minisql/src/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/test/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/googletest/include"/>
+					<Add directory="/mnt/d/LM/Database/minisql/thirdparty/glog/src"/>
+					<Add directory="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build"/>
+					<Add directory="/usr/include/c++/11"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
+					<Add directory="/usr/include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 cleanup_with_relative_prefix_unittest/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/demangle.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/logging.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/raw_logging.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/signalhandler.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/symbolize.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/utilities.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/CMakeFiles/glogbase.dir/src/vlog_is_on.cc.o">
+			<Option target="glog"/>
+			<Option target="glogtest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/glog/export.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/glog/logging.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/glog/raw_logging.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/glog/stl_logging.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/glog-build/glog/vlog_is_on.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/base/commandlineflags.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/base/googleinit.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/base/mutex.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/cleanup_immediately_unittest.cc">
+			<Option target="cleanup_immediately_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/cleanup_with_absolute_prefix_unittest.cc">
+			<Option target="cleanup_with_absolute_prefix_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/cleanup_with_relative_prefix_unittest.cc">
+			<Option target="cleanup_with_relative_prefix_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/demangle.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/demangle.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/demangle_unittest.cc">
+			<Option target="demangle_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/glog/log_severity.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/glog/platform.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/logging.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/logging_unittest.cc">
+			<Option target="logging_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/raw_logging.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/signalhandler.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/signalhandler_unittest.cc">
+			<Option target="signalhandler_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/stacktrace_unittest.cc">
+			<Option target="stacktrace_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/stl_logging_unittest.cc">
+			<Option target="stl_logging_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/symbolize.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/symbolize.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/symbolize_unittest.cc">
+			<Option target="symbolize_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/utilities.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/utilities.h">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/utilities_unittest.cc">
+			<Option target="utilities_unittest"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/vlog_is_on.cc">
+			<Option target="glogbase"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\thirdparty\googletest\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/googletest/cmake/Config.cmake.in">
+			<Option virtualFolder="CMake Files\thirdparty\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/googletest/cmake/gtest.pc.in">
+			<Option virtualFolder="CMake Files\thirdparty\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/googletest/cmake/gtest_main.pc.in">
+			<Option virtualFolder="CMake Files\thirdparty\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\thirdparty\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\thirdparty\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/glog-config.cmake.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/glog-modules.cmake.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/libglog.pc.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/cmake/DetermineGflagsNamespace.cmake">
+			<Option virtualFolder="CMake Files\thirdparty\glog\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/cmake/FindUnwind.cmake">
+			<Option virtualFolder="CMake Files\thirdparty\glog\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/cmake/GetCacheVariables.cmake">
+			<Option virtualFolder="CMake Files\thirdparty\glog\cmake\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/config.h.cmake.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\src\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/glog/logging.h.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\src\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/glog/raw_logging.h.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\src\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/glog/stl_logging.h.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\src\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/thirdparty/glog/src/glog/vlog_is_on.h.in">
+			<Option virtualFolder="CMake Files\thirdparty\glog\src\glog\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+		<Unit filename="/mnt/d/LM/Database/minisql/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

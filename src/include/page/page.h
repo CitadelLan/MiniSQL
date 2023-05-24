@@ -25,7 +25,6 @@ class Page {
 
   /** Default destructor. */
   ~Page() = default;
-
   /** @return the actual data contained within this page */
   inline char *GetData() { return data_; }
 

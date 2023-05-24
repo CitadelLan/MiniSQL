@@ -92,10 +92,9 @@ Page *BufferPoolManager::NewPage(page_id_t &page_id) {
         if(!is_replacer) return nullptr;
     }
 
-    /* 3.Set the page ID output parameter.
-     * Update P's metadata, zero out memory and add P to the page table. */
+    /* 3.Set the page ID output parameter. Update P's metadata, zero out memory and add P to the page table. */
     page_id = AllocatePage();
-    Page *new_page = pages_ + victim_frameId; // pages_[victim_frameId]
+    Page *new_page = pages_ + victim_frameId;
     if(new_page->IsDirty()){
         new_page->is_dirty_ = false;
         disk_manager_->WritePage(new_page->GetPageId(), EMPTY_PAGE_DATA);
@@ -175,7 +174,6 @@ bool BufferPoolManager::FlushPage(page_id_t page_id) {
 
     /* 3.更新is_dirty */
     flush_page->is_dirty_ = false;
-
     return true;
 }
 
