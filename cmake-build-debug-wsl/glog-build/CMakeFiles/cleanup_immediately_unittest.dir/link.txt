@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/cleanup_immediately_unittest.dir/src/cleanup_immediately_unittest.cc.o -o cleanup_immediately_unittest  libglogtestd.a 

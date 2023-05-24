@@ -1,0 +1,44 @@
+C:\WINDOWS\system32\wsl.exe --distribution Ubuntu-22.04 --exec /bin/bash -c "export CMAKE_COLOR_DIAGNOSTICS=ON && export CLION_IDE=TRUE && export JETBRAINS_IDE=TRUE && cd /mnt/d/LM/Database/minisql/cmake-build-debug-wsl && /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles' -S /mnt/d/LM/Database/minisql -B /mnt/d/LM/Database/minisql/cmake-build-debug-wsl"
+CMake Warning at CMakeLists.txt:25 (MESSAGE):
+  Could NOT find clang-format.
+
+
+-- Could NOT find GTest (missing: GTest_DIR)
+CMake Warning at thirdparty/glog/CMakeLists.txt:82 (find_package):
+  By not providing "Findgflags.cmake" in CMAKE_MODULE_PATH this project has
+  asked CMake to find a package configuration file provided by "gflags", but
+  CMake did not find one.
+
+  Could not find a package configuration file provided by "gflags" (requested
+  version 2.2.2) with any of the following names:
+
+    gflagsConfig.cmake
+    gflags-config.cmake
+
+  Add the installation prefix of "gflags" to CMAKE_PREFIX_PATH or set
+  "gflags_DIR" to a directory containing one of the above files.  If "gflags"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+
+
+-- Could NOT find Unwind (missing: Unwind_INCLUDE_DIR Unwind_LIBRARY) 
+-- Source file lists: /mnt/d/LM/Database/minisql/src/buffer/buffer_pool_manager.cpp;/mnt/d/LM/Database/minisql/src/buffer/lru_replacer.cpp;/mnt/d/LM/Database/minisql/src/catalog/catalog.cpp;/mnt/d/LM/Database/minisql/src/catalog/indexes.cpp;/mnt/d/LM/Database/minisql/src/catalog/table.cpp;/mnt/d/LM/Database/minisql/src/common/instance.cpp;/mnt/d/LM/Database/minisql/src/executor/delete_executor.cpp;/mnt/d/LM/Database/minisql/src/executor/execute_engine.cpp;/mnt/d/LM/Database/minisql/src/executor/index_scan_executor.cpp;/mnt/d/LM/Database/minisql/src/executor/insert_executor.cpp;/mnt/d/LM/Database/minisql/src/executor/seq_scan_executor.cpp;/mnt/d/LM/Database/minisql/src/executor/update_executor.cpp;/mnt/d/LM/Database/minisql/src/executor/values_executor.cpp;/mnt/d/LM/Database/minisql/src/index/b_plus_tree.cpp;/mnt/d/LM/Database/minisql/src/index/b_plus_tree_index.cpp;/mnt/d/LM/Database/minisql/src/index/index_iterator.cpp;/mnt/d/LM/Database/minisql/src/page/b_plus_tree_internal_page.cpp;/mnt/d/LM/Database/minisql/src/page/b_plus_tree_leaf_page.cpp;/mnt/d/LM/Database/minisql/src/page/b_plus_tree_page.cpp;/mnt/d/LM/Database/minisql/src/page/bitmap_page.cpp;/mnt/d/LM/Database/minisql/src/page/header_page.cpp;/mnt/d/LM/Database/minisql/src/page/index_roots_page.cpp;/mnt/d/LM/Database/minisql/src/page/table_page.cpp;/mnt/d/LM/Database/minisql/src/parser/minisql_lex.c;/mnt/d/LM/Database/minisql/src/parser/minisql_yacc.c;/mnt/d/LM/Database/minisql/src/parser/parser.c;/mnt/d/LM/Database/minisql/src/parser/syntax_tree.c;/mnt/d/LM/Database/minisql/src/parser/syntax_tree_printer.cpp;/mnt/d/LM/Database/minisql/src/planner/planner.cpp;/mnt/d/LM/Database/minisql/src/record/column.cpp;/mnt/d/LM/Database/minisql/src/record/row.cpp;/mnt/d/LM/Database/minisql/src/record/schema.cpp;/mnt/d/LM/Database/minisql/src/record/types.cpp;/mnt/d/LM/Database/minisql/src/storage/disk_manager.cpp;/mnt/d/LM/Database/minisql/src/storage/table_heap.cpp;/mnt/d/LM/Database/minisql/src/storage/table_iterator.cpp
+-- Create test suit: buffer_pool_manager_test
+-- Create test suit: lru_replacer_test
+-- Create test suit: catalog_test
+-- Create test suit: executor_test
+-- Create test suit: b_plus_tree_index_test
+-- Create test suit: b_plus_tree_test
+-- Create test suit: index_iterator_test
+-- Create test suit: index_roots_page_test
+-- Create test suit: tuple_test
+-- Create test suit: disk_manager_test
+-- Create test suit: table_heap_test
+-- CMAKE_BUILD_TYPE: Debug
+-- CMAKE_CXX_FLAGS:   -std=gnu++11 -fPIC -Wall -Wextra -Wattributes -Wunused-parameter
+-- CMAKE_CXX_FLAGS_DEBUG: -g -O0 -ggdb -fno-omit-frame-pointer -fno-optimize-sibling-calls
+-- CMAKE_CXX_FLAGS_RELEASE: -O3 -DNDEBUG
+-- CMAKE_BINARY_DIR: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/demangle_unittest.dir/src/demangle_unittest.cc.o -o demangle_unittest  libglogtestd.a 
