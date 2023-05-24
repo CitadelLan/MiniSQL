@@ -49,29 +49,102 @@ void DiskManager::WritePage(page_id_t logical_page_id, const char *page_data) {
  * TODO: Student Implement
  */
 page_id_t DiskManager::AllocatePage() {
-  ASSERT(false, "Not implemented yet.");
-  return INVALID_PAGE_ID;
+  DiskFileMetaPage *meta_page = reinterpret_cast<DiskFileMetaPage *>(GetMetaData());
+  uint32_t extentNums = meta_page->GetExtentNums(),
+           extentIndex = 0;
+  size_t pageSize = BitmapPage<PAGE_SIZE>::GetMaxSupportedSize();
+  bool extent_found = false;
+
+  /* 1. 在已有extent中寻找是否有可存储的空位 */
+  for(int i = 0; i < extentNums; i++)
+  {
+    if(meta_page->GetExtentUsedPage(i) < pageSize)
+    {
+      extentIndex = i;
+      extent_found = true;
+      break;
+    }
+  }
+
+  /* 2. 如果有可存储空位，在该extent中进行存储 */
+  uint32_t ofs;
+  if(extent_found)
+  {
+    char currBMap[PAGE_SIZE];
+    page_id_t BMAddr = (pageSize + 1) * extentIndex + 1 ;
+    /* !! 2.1. 读取该extent的bitMap
+     * (pageSize+1): 包含BitMap; *extentIndex: 已有extent数-1; +1: 到当前BitMap */
+    ReadPhysicalPage(BMAddr, currBMap);
+    /* 2.2. 分配页空间 */
+    reinterpret_cast<BitmapPage<PAGE_SIZE> *>(currBMap)->AllocatePage(ofs);
+    /* 2.3. metaPage信息更新 */
+    meta_page->num_allocated_pages_++;
+    meta_page->extent_used_page_[extentIndex]++;
+    /* 2.4. 写入新BMap */
+    WritePhysicalPage(BMAddr, currBMap);
+  }
+  /* 3. 未找到有空位的extent，新建extent */
+  else
+  {
+    char newBMap[PAGE_SIZE];
+    if(extentNums > 0)
+      extentIndex++;
+    page_id_t BMAddr = (pageSize + 1) * extentIndex + 1 ;
+    memset(newBMap, 0, sizeof(newBMap));
+    reinterpret_cast<BitmapPage<PAGE_SIZE> *>(newBMap)->AllocatePage((uint32_t &)ofs);
+    WritePhysicalPage(BMAddr, newBMap);
+    meta_page->num_extents_++;
+    meta_page->num_allocated_pages_++;
+    meta_page->extent_used_page_[extentIndex]++;
+  }
+
+  return ofs + pageSize * extentIndex;
 }
 
 /**
  * TODO: Student Implement
  */
-void DiskManager::DeAllocatePage(page_id_t logical_page_id) {
-  ASSERT(false, "Not implemented yet.");
+void DiskManager::DeAllocatePage(page_id_t logical_page_id)
+{
+  DiskFileMetaPage *meta_page = reinterpret_cast<DiskFileMetaPage *>(GetMetaData());
+  size_t pageNum = BitmapPage<PAGE_SIZE>::GetMaxSupportedSize();
+  char currBMap[PAGE_SIZE];
+  uint32_t extentIndex = logical_page_id / pageNum,
+           ofs = logical_page_id % pageNum;
+
+  ReadPhysicalPage((pageNum + 1) *extentIndex + 1, currBMap);
+
+  reinterpret_cast<BitmapPage<PAGE_SIZE> *>(currBMap)->DeAllocatePage(ofs);
+
+  meta_page->num_allocated_pages_--;
+  meta_page->extent_used_page_[extentIndex]--;
+
+  return;
 }
 
 /**
  * TODO: Student Implement
+ * 思路类似于Allocate方法：先找extent位置，找到对应BitMap的空判断函数来做判断
  */
 bool DiskManager::IsPageFree(page_id_t logical_page_id) {
-  return false;
+  size_t pageNum = BitmapPage<PAGE_SIZE>::GetMaxSupportedSize();
+  char currBMap[PAGE_SIZE];
+  uint32_t extentIndex = logical_page_id / pageNum,
+           ofs = logical_page_id % pageNum;
+
+  ReadPhysicalPage((pageNum + 1) *extentIndex + 1, currBMap);
+
+  return reinterpret_cast<BitmapPage<PAGE_SIZE> *>(currBMap)->IsPageFree(ofs);
 }
 
 /**
  * TODO: Student Implement
  */
 page_id_t DiskManager::MapPageId(page_id_t logical_page_id) {
-  return 0;
+  size_t pageNum = BitmapPage<PAGE_SIZE>::GetMaxSupportedSize();
+
+  return (pageNum+1) * (logical_page_id / pageNum) + 1 + logical_page_id % pageNum;
+  //    实际extent页数 * 在该page前的extent数 + 当前extent的BMap + 当前extent的页下标
 }
 
 int DiskManager::GetFileSize(const std::string &file_name) {

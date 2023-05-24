@@ -5,6 +5,7 @@
 
 #include "page/bitmap_page.h"
 
+/* 一个disk meta page可以对应的最大 数据page 数 */
 static constexpr page_id_t MAX_VALID_PAGE_ID = (PAGE_SIZE - 8) / 4 * BitmapPage<PAGE_SIZE>::GetMaxSupportedSize();
 
 class DiskFileMetaPage {
