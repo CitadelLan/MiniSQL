@@ -81,7 +81,8 @@ uint32_t Schema::DeserializeFrom(char *buf, Schema *&schema) {
 
   schema = new Schema(columns, isManage);
 
-  std::fill_n(columns.begin(), columnsNum, nullptr);
+  columns.clear();
+  // columns.shrink_to_fit();  // pending
 
   return ofs;
 }

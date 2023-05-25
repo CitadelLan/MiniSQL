@@ -121,7 +121,7 @@ uint32_t Column::DeserializeFrom(char *buf, Column *&column) {
   /* name长度 */
   uint32_t strSize = MACH_READ_UINT32(buf + ofs);
   ofs += sizeof(uint32_t);
-  /* name_ */
+  /* name_ —— 作为varchar类型 */
   for(uint32_t i = 0; i < strSize; i++)
     name += MACH_READ_FROM(char, buf + ofs + i);
   ofs += strSize;
