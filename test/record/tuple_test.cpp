@@ -81,10 +81,18 @@ TEST(TupleTest, RowTest) {
   std::vector<Column *> columns = {new Column("id", TypeId::kTypeInt, 0, false, false),
                                    new Column("name", TypeId::kTypeChar, 64, 1, true, false),
                                    new Column("account", TypeId::kTypeFloat, 2, true, false)};
+  // char *a = new char[0xffff];
+  // // buf足够大，防止覆盖
+  // uint32_t b = columns[0]->SerializeTo(a);
+  // uint32_t c = columns[0]->GetSerializedSize();
+  // uint32_t d = Column::DeserializeFrom(a, columns[0]);
   std::vector<Field> fields = {Field(TypeId::kTypeInt, 188),
                                Field(TypeId::kTypeChar, const_cast<char *>("minisql"), strlen("minisql"), false),
                                Field(TypeId::kTypeFloat, 19.99f)};
   auto schema = std::make_shared<Schema>(columns);
+  // uint32_t e = schema->SerializeTo(a);
+  // uint32_t f = schema->GetSerializedSize();
+  // uint32_t g = Schema::DeserializeFrom(a, reinterpret_cast<Schema *&>(schema));
   Row row(fields);
   table_page.Init(0, INVALID_PAGE_ID, nullptr, nullptr);
   table_page.InsertTuple(row, schema.get(), nullptr, nullptr, nullptr);

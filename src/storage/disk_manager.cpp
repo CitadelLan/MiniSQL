@@ -69,11 +69,11 @@ page_id_t DiskManager::AllocatePage() {
   uint32_t ofs;
   meta_page->num_allocated_pages_++;
   page_id_t BMAddr = (pageSize + 1) * extentIndex + 1 ;
+  // (pageSize+1): 包含BitMap; *extentIndex: 已有extent数-1; +1: 到当前BitMap
   if(extent_found)
   {
     char currBMap[PAGE_SIZE];
-    /* !! 2.1. 读取该extent的bitMap
-     * (pageSize+1): 包含BitMap; *extentIndex: 已有extent数-1; +1: 到当前BitMap */
+    /* 2.1. 读取该extent的bitMap */
     ReadPhysicalPage(BMAddr, currBMap);
     /* 2.2. 分配页空间 */
     reinterpret_cast<BitmapPage<PAGE_SIZE> *>(currBMap)->AllocatePage(ofs);
