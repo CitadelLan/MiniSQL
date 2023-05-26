@@ -93,21 +93,6 @@ uint32_t Row::DeserializeFrom(char *buf, Schema *schema) {
     /* 对非空值属性的空间分配（对vector和row物理空间分配）*/
     else {
       TypeId type = schema->GetColumn(i)->GetType();
-      switch (type)
-      {
-        case kTypeInt:
-          fields_[i] = new Field(type, 0);
-          break;
-        case kTypeChar:
-          fields_[i] = new Field(type, (char*)"deserialize ready", 0, false);
-          // 尽量不去使用set类函数（破坏private属性）
-          break;
-        case kTypeFloat:
-          fields_[i] = new Field(type, (float)0);
-          break;
-        default:  // 应该不触发？
-          break;
-      }
       ofs += Field::DeserializeFrom(buf + ofs, type, &fields_[i],
                                     null_indicator[i]);
     }
