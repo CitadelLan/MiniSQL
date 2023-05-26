@@ -139,7 +139,8 @@ uint32_t Row::GetSerializedSize(Schema *schema) const {
 
   /* fields */
   for(uint32_t i = 0; i < vctSize; i++)
-    ofs += fields_[i]->GetSerializedSize();
+    if(!fields_[i]->IsNull())
+      ofs += fields_[i]->GetSerializedSize();
 
   return ofs;
 }
