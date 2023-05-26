@@ -138,12 +138,36 @@ void TableHeap::DeleteTable(page_id_t page_id) {
  * TODO: Student Implement
  */
 TableIterator TableHeap::Begin(Transaction *txn) {
-  return TableIterator();
+  TablePage *currPg;
+  page_id_t currPgId = first_page_id_;
+  RowId headRID = INVALID_ROWID;
+  Row  *retRow = nullptr;
+  bool isFound;
+
+  /* Begin最大的问题在于原来TableHeap里存储的首页id可能被删除
+   * 所以在Begin中需要重新定位实际的首页id，并做重定向 */
+  while(currPgId != INVALID_PAGE_ID)
+  {
+    currPg = reinterpret_cast<TablePage *>
+        (buffer_pool_manager_->FetchPage(currPgId));
+    isFound = currPg->GetFirstTupleRid(&headRID);
+    buffer_pool_manager_->UnpinPage(currPgId, false);
+    if(isFound) break;
+    currPgId = currPg->GetNextPageId();
+  }
+
+  if(isFound){
+    retRow = new Row(headRID);
+    GetTuple(retRow, nullptr);
+    return TableIterator(retRow, this);
+  }
+
+  return End();
 }
 
 /**
  * TODO: Student Implement
  */
 TableIterator TableHeap::End() {
-  return TableIterator();
+  return TableIterator(nullptr, this);
 }
