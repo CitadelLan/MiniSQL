@@ -25,13 +25,15 @@ TEST(TableHeapTest, TableHeapSampleTest) {
   // create rows
   std::unordered_map<int64_t, Fields *> row_values;
   uint32_t size = 0;
-  TableHeap *table_heap = TableHeap::Create(bpm_, schema.get(), nullptr, nullptr, nullptr);
+  TableHeap *table_heap = TableHeap::Create(bpm_, schema.get(),
+                                            nullptr, nullptr, nullptr);
   for (int i = 0; i < row_nums; i++) {
     int32_t len = RandomUtils::RandomInt(0, 64);
     char *characters = new char[len];
     RandomUtils::RandomString(characters, len);
     Fields *fields =
-        new Fields{Field(TypeId::kTypeInt, i), Field(TypeId::kTypeChar, const_cast<char *>(characters), len, true),
+        new Fields{Field(TypeId::kTypeInt, i),
+                   Field(TypeId::kTypeChar, const_cast<char *>(characters), len, true),
                    Field(TypeId::kTypeFloat, RandomUtils::RandomFloat(-999.f, 999.f))};
     Row row(*fields);
     ASSERT_TRUE(table_heap->InsertTuple(row, nullptr));
@@ -55,6 +57,11 @@ TEST(TableHeapTest, TableHeapSampleTest) {
     for (size_t j = 0; j < schema.get()->GetColumnCount(); j++) {
       ASSERT_EQ(CmpBool::kTrue, row.GetField(j)->CompareEquals(row_kv.second->at(j)));
     }
+    /* start of added test rowId有问题 */
+    // RowId tmp = row.GetRowId();
+    // table_heap->ApplyDelete(tmp, nullptr);
+    // int a = 0;
+    /* end of added test */
     // free spaces
     delete row_kv.second;
   }
