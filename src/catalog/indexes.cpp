@@ -43,7 +43,8 @@ uint32_t IndexMetadata::SerializeTo(char *buf) const {
  * TODO: Student Implement
  */
 uint32_t IndexMetadata::GetSerializedSize() const {
-  return 0;
+  return sizeof(uint32_t) + sizeof(index_id_t) + sizeof(uint32_t) + index_name_.size() * sizeof(char) +
+         sizeof(table_id_t) + sizeof(uint32_t) + key_map_.size() * sizeof(uint32_t);
 }
 
 uint32_t IndexMetadata::DeserializeFrom(char *buf, IndexMetadata *&index_meta) {
@@ -83,7 +84,7 @@ uint32_t IndexMetadata::DeserializeFrom(char *buf, IndexMetadata *&index_meta) {
 
 Index *IndexInfo::CreateIndex(BufferPoolManager *buffer_pool_manager, const string &index_type) {
   size_t max_size = 0;
-  for (auto col : key_schema_->GetColumns()) {
+  for (auto col : key_schema_->GetColumns(0)) {
     max_size += col->GetLength();
   }
 

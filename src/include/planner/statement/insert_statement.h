@@ -41,7 +41,7 @@ class InsertStatement : public AbstractStatement {
     std::vector<AbstractExpressionRef> value;
     TableInfo *info = nullptr;
     context_->GetCatalog()->GetTable(table_name_, info);
-    auto columns = info->GetSchema()->GetColumns();
+    auto columns = info->GetSchema()->GetColumns(0);
 
     for (auto column : columns) {
       if (!ast)

@@ -47,7 +47,7 @@ class SelectStatement : public AbstractStatement {
     context_->GetCatalog()->GetTable(table_name_, info);
     auto schema = info->GetSchema();
     if (!ast) {
-      auto columns = schema->GetColumns();
+      auto columns = schema->GetColumns(0);
       for (auto column : columns) {
         auto expr = std::make_shared<ColumnValueExpression>(0, column->GetTableInd(), column->GetType());
         column_list_.emplace_back(make_pair(column->GetName(), expr));

@@ -24,8 +24,9 @@ ExecuteEngine::ExecuteEngine() {
     mkdir("./databases", 0777);
     dir = opendir(path);
   }
-  /** After you finish the code for the CatalogManager section,
-   *  you can uncomment the commented code.
+  /** When you have completed all the code for
+   *  the test, run it using main.cpp and uncomment
+   *  this part of the code.
   struct dirent *stdir;
   while((stdir = readdir(dir)) != nullptr) {
     if( strcmp( stdir->d_name , "." ) == 0 ||
@@ -170,7 +171,7 @@ dberr_t ExecuteEngine::Execute(pSyntaxNode ast) {
         }
       }
       int k = 0;
-      for (const auto &column : schema->GetColumns()) {
+      for (const auto &column : schema->GetColumns(0)) {
         data_width[k] = max(data_width[k], int(column->GetName().length()));
         k++;
       }
@@ -178,7 +179,7 @@ dberr_t ExecuteEngine::Execute(pSyntaxNode ast) {
       writer.Divider(data_width);
       k = 0;
       writer.BeginRow();
-      for (const auto &column : schema->GetColumns()) {
+      for (const auto &column : schema->GetColumns(0)) {
         writer.WriteHeaderCell(column->GetName(), data_width[k++]);
       }
       writer.EndRow();

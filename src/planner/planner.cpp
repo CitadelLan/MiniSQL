@@ -40,7 +40,7 @@ AbstractPlanNodeRef Planner::PlanSelect(std::shared_ptr<SelectStatement> stateme
   vector<IndexInfo *> available_index;
   context_->GetCatalog()->GetTableIndexes(statement->table_name_, indexes);
   for (auto index : indexes) {
-    if (index->GetIndexKeySchema()->GetColumns().size() == 1) {
+    if (index->GetIndexKeySchema()->GetColumns(0).size() == 1) {
       auto col_id = index->GetIndexKeySchema()->GetColumn(0)->GetTableInd();
       if (std::find(statement->column_in_condition_.begin(), statement->column_in_condition_.end(), col_id) !=
           statement->column_in_condition_.end()) {
