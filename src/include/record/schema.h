@@ -23,7 +23,7 @@ class Schema {
     }
   }
 
-  inline const std::vector<Column *> &GetColumns() const { return columns_; }
+  inline const std::vector<Column *> &GetColumns(int i) const { return columns_; }
 
   inline const Column *GetColumn(const uint32_t column_index) const { return columns_[column_index]; }
 

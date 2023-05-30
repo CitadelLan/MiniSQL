@@ -35,7 +35,6 @@ Column::Column(const Column *other)
       table_ind_(other->table_ind_),
       nullable_(other->nullable_),
       unique_(other->unique_) {}
-
 /**
 * TODO: Student Implement
 */

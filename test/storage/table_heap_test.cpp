@@ -67,3 +67,8 @@ TEST(TableHeapTest, TableHeapSampleTest) {
   }
   ASSERT_EQ(size, 0);
 }
+
+TEST(TableHeapTest, MyTHTest)
+{
+
+}

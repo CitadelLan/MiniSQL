@@ -131,7 +131,7 @@ uint32_t Row::GetSerializedSize(Schema *schema) const {
 }
 
 void Row::GetKeyFromRow(const Schema *schema, const Schema *key_schema, Row &key_row) {
-  auto columns = key_schema->GetColumns();
+  auto columns = key_schema->GetColumns(0);
   std::vector<Field> fields;
   uint32_t idx;
   for (auto column : columns) {

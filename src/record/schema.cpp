@@ -1,4 +1,5 @@
 #include "record/schema.h"
+#include <memory>
 
 /**
  * TODO: Student Implement
@@ -25,7 +26,7 @@ uint32_t Schema::SerializeTo(char *buf) const {
   for(auto it : columns_)
     ofs += it->SerializeTo(buf+ofs);
 
-  /* unique_ */
+  /* is_manage_ */
   MACH_WRITE_TO(bool, buf + ofs, is_manage_);
   ofs += sizeof(bool);
 
@@ -42,7 +43,7 @@ uint32_t Schema::GetSerializedSize() const {
   for(auto it : columns_)
     ofs += it->GetSerializedSize();
 
-  /* unique_ */
+  /* is_manage_ */
   ofs += sizeof(bool);
 
   return ofs;
