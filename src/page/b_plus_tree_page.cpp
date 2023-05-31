@@ -74,14 +74,14 @@ void BPlusTreePage::SetMaxSize(int size) {
  * TODO: Student Implement
  */
 int BPlusTreePage::GetMinSize() const {
+    if(IsRootPage()){
+        if(IsLeafPage()) return 1;
+        else return 2;
+    }
     if(IsLeafPage()){
         return max_size_/2;
-    } else if(IsRootPage()){
-        if(IsLeafPage()) return 2;
-        else return 2;
-    } else{
-        return (max_size_ + 1)/2;
     }
+    return (max_size_ - 1)/2 + 1;
 }
 
 /*
