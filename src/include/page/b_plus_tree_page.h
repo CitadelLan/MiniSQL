@@ -63,7 +63,7 @@ class BPlusTreePage {
   // member variable, attributes that both internal and leaf page share
   [[maybe_unused]] IndexPageType page_type_;
   [[maybe_unused]] int key_size_;
-  [[maybe_unused]] lsn_t lsn_;
+  [[maybe_unused]] lsn_t lsn_;  // 应该真的用不上
   [[maybe_unused]] int size_;
   [[maybe_unused]] int max_size_;
   [[maybe_unused]] page_id_t parent_page_id_;
