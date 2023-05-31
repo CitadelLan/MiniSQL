@@ -70,3 +70,8 @@ TEST(BPlusTreeTests, SampleTest) {
     ASSERT_EQ(kv_map[delete_seq[i]], ans[ans.size() - 1]);
   }
 }
+
+TEST(BPlusTreeTests, MyTest)
+{
+
+}

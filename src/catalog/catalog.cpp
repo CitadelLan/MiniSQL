@@ -79,29 +79,29 @@ CatalogManager::CatalogManager(BufferPoolManager *buffer_pool_manager, LockManag
       auto meta_page = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID);
       catalog_meta_ = CatalogMeta::DeserializeFrom(meta_page->GetData());
 
-    for (auto it : catalog_meta_->table_meta_pages_) 
-    {
-      auto table_meta_page = buffer_pool_manager_->FetchPage(it.second);
-      TableMetadata *table_meta;
-      TableMetadata::DeserializeFrom(table_meta_page->GetData(), table_meta);
-      auto table_heap = TableHeap::Create(buffer_pool_manager_, table_meta->GetFirstPageId(), table_meta->GetSchema(),log_manager_, lock_manager_);
-      table_names_[table_meta->GetTableName()] = table_meta->GetTableId();
-      TableInfo *table_info = TableInfo::Create();
-      table_info->Init(table_meta, table_heap);
-      tables_[table_meta->GetTableId()] = table_info;
-    }
+      for (auto it : catalog_meta_->table_meta_pages_)
+      {
+        auto table_meta_page = buffer_pool_manager_->FetchPage(it.second);
+        TableMetadata *table_meta = nullptr;
+        TableMetadata::DeserializeFrom(table_meta_page->GetData(), table_meta);
+        auto table_heap = TableHeap::Create(buffer_pool_manager_, table_meta->GetFirstPageId(), table_meta->GetSchema(),log_manager_, lock_manager_);
+        table_names_[table_meta->GetTableName()] = table_meta->GetTableId();
+        TableInfo *table_info = TableInfo::Create();
+        table_info->Init(table_meta, table_heap);
+        tables_[table_meta->GetTableId()] = table_info;
+      }
 
-    for (auto it : catalog_meta_->index_meta_pages_) 
-    {
-      auto index_meta_page = buffer_pool_manager_->FetchPage(it.second);
-      IndexMetadata *index_meta;
-      IndexMetadata::DeserializeFrom(index_meta_page->GetData(), index_meta);
-      index_names_[tables_[index_meta->GetTableId()]->GetTableName()][index_meta->GetIndexName()] = index_meta->GetIndexId();
-      auto index_info = IndexInfo::Create();
-      index_info->Init(index_meta, tables_[index_meta->GetTableId()], buffer_pool_manager_);
-      indexes_[index_meta->GetIndexId()] = index_info;
+      for (auto it : catalog_meta_->index_meta_pages_)
+      {
+        auto index_meta_page = buffer_pool_manager_->FetchPage(it.second);
+        IndexMetadata *index_meta;
+        IndexMetadata::DeserializeFrom(index_meta_page->GetData(), index_meta);
+        index_names_[tables_[index_meta->GetTableId()]->GetTableName()][index_meta->GetIndexName()] = index_meta->GetIndexId();
+        auto index_info = IndexInfo::Create();
+        index_info->Init(index_meta, tables_[index_meta->GetTableId()], buffer_pool_manager_);
+        indexes_[index_meta->GetIndexId()] = index_info;
+      }
     }
-  }
 }
 
 CatalogManager::~CatalogManager() {

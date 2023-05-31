@@ -40,5 +40,17 @@ CMake Warning at thirdparty/glog/CMakeLists.txt:82 (find_package):
 -- CMAKE_CXX_FLAGS_RELEASE: -O3 -DNDEBUG
 -- CMAKE_BINARY_DIR: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl
 -- Configuring done
--- Generating done
--- Build files have been written to: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl
+CMake Error at test/CMakeLists.txt:4 (ADD_EXECUTABLE):
+  Cannot find source file:
+
+    MyTest.h
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
+  .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
+
+
+CMake Error at test/CMakeLists.txt:4 (ADD_EXECUTABLE):
+  No SOURCES given to target: minisql_test
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.
