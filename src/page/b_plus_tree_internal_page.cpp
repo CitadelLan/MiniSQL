@@ -22,7 +22,8 @@ void InternalPage::Init(page_id_t page_id, page_id_t parent_id, int key_size, in
   SetPageType(IndexPageType::INTERNAL_PAGE);
   SetPageId(page_id);
   SetParentPageId(parent_id);
-  SetSize(key_size);
+  SetKeySize(key_size);
+  SetSize(0);
   SetMaxSize(max_size);
 }
 
