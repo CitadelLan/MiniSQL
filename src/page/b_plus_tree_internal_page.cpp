@@ -173,9 +173,8 @@ void InternalPage::CopyNFrom(void *src, int size, BufferPoolManager *buffer_pool
     // 该页被访问/使用，符合unpin条件，同时由于数据遭到修改，成为了脏页
   }
 
-  /* 下列所有相关的UnpinPage函数都仅在parentPageId有变动的情况下才执行，
-   * 个人认为这可能是想通过逐级的方式来做处理？后续所有函数都延续了这一思路，在编写其他代码时请多注意 */
-  buffer_pool_manager->UnpinPage(GetPageId(), true);
+  /* 所有相关的UnpinPage函数都仅在parentPageId有变动的情况下才执行，
+   * 在FetchPage之后，一定会对应一个UnpinPage，在编写其他代码时请多注意 */
 }
 
 /*****************************************************************************
@@ -238,13 +237,10 @@ void InternalPage::MoveAllTo(InternalPage *recipient, GenericKey *middle_key, Bu
   // parent页应该是需要进行修改的，但在这一层级的操作中，并不知道应该赋哪个值，先放这里了
 
   recipient->CopyNFrom(PairPtrAt(0), GetSize(), buffer_pool_manager);
-  // 这里已经对recipient的新增子节点的内存空间做了修改
+  // 这里buffer已经对recipient的新增子节点的内存空间做了修改
 
   /* 2. 当前页报废 */
   SetSize(0);
-
-  /* 3. 修改recipient和当前页在buffer中的情况 */
-  buffer_pool_manager->UnpinPage(recipient->GetPageId(), true);
 }
 
 /*****************************************************************************
@@ -262,7 +258,7 @@ void InternalPage::MoveFirstToEndOf(InternalPage *recipient, GenericKey *middle_
                                     BufferPoolManager *buffer_pool_manager) {
   /* 1. 页转移 */
   recipient->CopyLastFrom(middle_key, ValueAt(0),buffer_pool_manager);
-  // 这里已经对recipient的新增子节点的内存空间做了修改
+  // 这里buffer已经对recipient的新增子节点的内存空间做了修改
 
   /* 2. 删除头部pair：当前页size-1 */
   Remove(0);
@@ -278,7 +274,7 @@ void InternalPage::CopyLastFrom(GenericKey *key, const page_id_t value, BufferPo
 
   /* 2. 修改子节点信息，在buffer中更新 */
   Page *childPg = buffer_pool_manager->FetchPage(value);
-  BPlusTreeInternalPage *child = reinterpret_cast<BPlusTreeInternalPage *>(childPg->GetData());  // 父节点
+  auto *child = reinterpret_cast<BPlusTreeInternalPage *>(childPg->GetData());  // 父节点
   child->SetParentPageId(GetPageId());
   buffer_pool_manager->UnpinPage(child->GetPageId(), true);
 }
@@ -309,7 +305,7 @@ void InternalPage::MoveLastToFrontOf(InternalPage *recipient, GenericKey *middle
 void InternalPage::CopyFirstFrom(const page_id_t value, BufferPoolManager *buffer_pool_manager) {
   /* 修改子节点信息，在buffer中更新 */
   Page *childPg = buffer_pool_manager->FetchPage(value);
-  BPlusTreeInternalPage *child = reinterpret_cast<BPlusTreeInternalPage *>(childPg->GetData());  // 父节点
+  auto *child = reinterpret_cast<BPlusTreeInternalPage *>(childPg->GetData());  // 父节点
   child->SetParentPageId(GetPageId());
 
   /* 从后向前复制——留出0号空位 */
