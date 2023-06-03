@@ -18,9 +18,9 @@ uint32_t Row::SerializeTo(char *buf, Schema *schema) const {
   uint32_t vctSize = fields_.size();
   std::vector<bool> null_indicator;
 
-  /* rid_ */
-  MACH_WRITE_TO(RowId, buf + ofs, rid_);
-  ofs += sizeof(RowId);
+  //  /* rid_ */
+  //  MACH_WRITE_TO(RowId, buf + ofs, rid_);
+  //  ofs += sizeof(RowId);
 
   /* fields_大小 */
   MACH_WRITE_UINT32(buf + ofs, vctSize);
@@ -65,9 +65,9 @@ uint32_t Row::DeserializeFrom(char *buf, Schema *schema) {
   uint32_t vctSize;
   std::vector<bool> null_indicator;
 
-  /* rid_ */
-  rid_ = MACH_READ_FROM(RowId, buf + ofs);
-  ofs += sizeof(RowId);
+  //  /* rid_ */
+  //  rid_ = MACH_READ_FROM(RowId, buf + ofs);
+  //  ofs += sizeof(RowId);
 
   /* fields_大小 */
   vctSize = MACH_READ_UINT32(buf + ofs);
@@ -112,8 +112,8 @@ uint32_t Row::GetSerializedSize(Schema *schema) const {
   uint32_t ofs = 0;
   uint32_t vctSize = fields_.size();
 
-  /* rid_ */
-  ofs += sizeof(RowId);
+  //  /* rid_ */
+  //  ofs += sizeof(RowId);
 
   /* fields_数量 */
   ofs += sizeof(uint32_t);

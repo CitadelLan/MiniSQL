@@ -8,8 +8,8 @@ void TablePage::Init(page_id_t page_id, page_id_t prev_id, LogManager *log_mgr, 
   SetTupleCount(0);
 }
 
-bool TablePage::InsertTuple(Row &row, Schema *schema, Transaction *txn, LockManager *lock_manager,
-                            LogManager *log_manager) {
+bool TablePage::InsertTuple(Row &row, Schema *schema, Transaction *txn,
+                            LockManager *lock_manager, LogManager *log_manager) {
   uint32_t serialized_size = row.GetSerializedSize(schema);
   ASSERT(serialized_size > 0, "Can not have empty row.");
   if (GetFreeSpaceRemaining() < serialized_size + SIZE_TUPLE) {
@@ -29,20 +29,17 @@ bool TablePage::InsertTuple(Row &row, Schema *schema, Transaction *txn, LockMana
   }
   // Otherwise we claim available free space..
   SetFreeSpacePointer(GetFreeSpacePointer() - serialized_size);
-
-  // Set rid
-  row.SetRowId(RowId(GetTablePageId(), i));
-
   uint32_t __attribute__((unused)) write_bytes = row.SerializeTo(GetData() + GetFreeSpacePointer(), schema);
   ASSERT(write_bytes == serialized_size, "Unexpected behavior in row serialize.");
 
   // Set the tuple.
   SetTupleOffsetAtSlot(i, GetFreeSpacePointer());
   SetTupleSize(i, serialized_size);
+  // Set rid
+  row.SetRowId(RowId(GetTablePageId(), i));
   if (i == GetTupleCount()) {
     SetTupleCount(GetTupleCount() + 1);
   }
-
   return true;
 }
 
@@ -64,8 +61,8 @@ bool TablePage::MarkDelete(const RowId &rid, Transaction *txn, LockManager *lock
   return true;
 }
 
-bool TablePage::UpdateTuple(const Row &new_row, Row *old_row, Schema *schema, Transaction *txn,
-                            LockManager *lock_manager, LogManager *log_manager) {
+bool TablePage::UpdateTuple(const Row &new_row, Row *old_row, Schema *schema,
+                            Transaction *txn, LockManager *lock_manager, LogManager *log_manager) {
   ASSERT(old_row != nullptr && old_row->GetRowId().Get() != INVALID_ROWID.Get(), "invalid old row.");
   uint32_t serialized_size = new_row.GetSerializedSize(schema);
   ASSERT(serialized_size > 0, "Can not have empty row.");
@@ -151,12 +148,14 @@ bool TablePage::GetTuple(Row *row, Schema *schema, Transaction *txn, LockManager
   uint32_t slot_num = row->GetRowId().GetSlotNum();
   // If somehow we have more slots than tuples, abort the transaction.
   if (slot_num >= GetTupleCount()) {
+    printf("slot_num >= GetTupleCount();Slot_Num=%u,TupleCount=%d\n",slot_num,(int)GetTupleCount());
     return false;
   }
   // Otherwise get the current tuple size too.
   uint32_t tuple_size = GetTupleSize(slot_num);
   // If the tuple is deleted, abort the transaction.
   if (IsDeleted(tuple_size)) {
+    printf("IsDel Mask\n");
     return false;
   }
   // At this point, we have at least a shared lock on the RID. Copy the tuple data into our result.
@@ -183,10 +182,6 @@ bool TablePage::GetNextTupleRid(const RowId &cur_rid, RowId *next_rid) {
   // Find and return the first valid tuple after our current slot number.
   for (auto i = cur_rid.GetSlotNum() + 1; i < GetTupleCount(); i++) {
     if (!IsDeleted(GetTupleSize(i))) {
-      if(i == 1) {
-        int a = GetTupleCount();
-        int b = 0;
-      }
       next_rid->Set(GetTablePageId(), i);
       return true;
     }

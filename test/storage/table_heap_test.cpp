@@ -68,7 +68,7 @@ TEST(TableHeapTest, TableHeapSampleTest) {
 
 TEST(TableHeapTest, MyTHTest)
 {
-  // TableHeap 初始化
+  /* 0. TableHeap 初始化 */
   auto disk_mgr_ = new DiskManager(db_file_name);
   auto bpm_ = new BufferPoolManager(DEFAULT_BUFFER_POOL_SIZE, disk_mgr_);
   const int row_nums = 1000;
@@ -78,38 +78,41 @@ TEST(TableHeapTest, MyTHTest)
   auto schema = std::make_shared<Schema>(columns);
   TableHeap *table_heap = TableHeap::Create(bpm_, schema.get(),
                                             nullptr, nullptr, nullptr);
-  // 建立rows
+  /* 1. 检验InsertTuple UpdateTuple */
   std::unordered_map<int64_t, Fields *> row_values;
-  std::vector<RowId> RID;
+  // std::vector<RowId> RID;
   float tmp = 1;
   for (int i = 0; i < row_nums; i++) {
-    int32_t len = 20;
-    char *characters = "kestrel";
+    int32_t len = RandomUtils::RandomInt(0, 64);
+    char *characters = new char[len];
+    RandomUtils::RandomString(characters, len);
     auto *fields =
         new Fields{Field(TypeId::kTypeInt, i),
                    Field(TypeId::kTypeChar, const_cast<char *>(characters), len, true),
                    // 析构时free
-                   Field(TypeId::kTypeFloat, tmp)};
+                   Field(TypeId::kTypeFloat, RandomUtils::RandomFloat(-999.f, 999.f))};
     Row row(*fields);
-    /* 检验InsertTuple UpdateTuple */
     ASSERT_TRUE(table_heap->InsertTuple(row, nullptr));
 
-    RID.push_back(row.GetRowId());
+    // RID.push_back(row.GetRowId());
     row_values.emplace(row.GetRowId().Get(), fields);
   }
 
-  /* 检验Begin() End() it++(侧面检验++it) */
+  /* 2. 检验Begin() End() it++(侧面检验++it) */
   int i = 0;
-  for(auto it = table_heap->Begin(nullptr); it != table_heap->End(); it++)
+  for(auto it = table_heap->Begin(nullptr); it != table_heap->End(); it++, i++)
   {
     if(i >= 60)
     {
       int a = 0;
     }
-    EXPECT_EQ(it->GetRowId(), RID[i]);
-    i++;
+    // EXPECT_EQ(it->GetRowId(), RID[i]); // 用RID比较不合适，因为插入顺序不等于空间存储顺序
+    EXPECT_EQ(CmpBool::kTrue, it->GetField(0)->CompareEquals(row_values[it->GetRowId().Get()]->at(0)));
   }
-  /* 创建新row */
+  ASSERT_EQ(i, row_nums);
+
+  /* 3. 检验UpdateTuple() */
+  /* 3.1. 创建新row */
   int32_t len = 20;
   char *characters = "kestrel";
   auto *fields =
@@ -118,9 +121,10 @@ TEST(TableHeapTest, MyTHTest)
                  // 析构时free
                  Field(TypeId::kTypeFloat, tmp)};
   Row row(*fields);
-  /* 检验UpdateTuple() */
   auto HRID = table_heap->Begin(nullptr)->GetRowId();
   ASSERT_TRUE(table_heap->UpdateTuple(row, HRID, nullptr));
+  auto head = table_heap->Begin(nullptr);
+  ASSERT_EQ(CmpBool::kTrue, head->GetField(0)->CompareEquals(fields->at(0)));
 
   table_heap->FreeTableHeap();
   delete table_heap;
