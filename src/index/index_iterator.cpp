@@ -16,11 +16,25 @@ IndexIterator::~IndexIterator() {
 }
 
 std::pair<GenericKey *, RowId> IndexIterator::operator*() {
-  ASSERT(false, "Not implemented yet.");
+    return page -> GetItem(item_index);
 }
 
 IndexIterator &IndexIterator::operator++() {
-  ASSERT(false, "Not implemented yet.");
+    if (item_index == page -> GetSize() - 1){   // 页的最后一个
+        page_id_t next_page_id = page -> GetNextPageId();
+        if (next_page_id!=INVALID_PAGE_ID){     // 还有下一页
+            item_index = 0;
+            // page变成下一页
+            Page* next_page = buffer_pool_manager->FetchPage(next_page_id);
+            page = reinterpret_cast<LeafPage *>(next_page -> GetData());
+        } else{
+            item_index++;
+        }
+    }
+    else{
+        item_index++;
+    }
+    return *this;
 }
 
 bool IndexIterator::operator==(const IndexIterator &itr) const {
@@ -28,5 +42,5 @@ bool IndexIterator::operator==(const IndexIterator &itr) const {
 }
 
 bool IndexIterator::operator!=(const IndexIterator &itr) const {
-  return !(*this == itr);
+    return !(current_page_id == itr.current_page_id && item_index == itr.item_index);
 }
