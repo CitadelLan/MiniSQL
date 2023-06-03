@@ -21,14 +21,16 @@ std::pair<GenericKey *, RowId> IndexIterator::operator*() {
 
 IndexIterator &IndexIterator::operator++() {
     if (item_index == page -> GetSize() - 1){   // 页的最后一个
+        item_index = 0;
         page_id_t next_page_id = page -> GetNextPageId();
+        buffer_pool_manager ->UnpinPage(current_page_id, false);
         if (next_page_id!=INVALID_PAGE_ID){     // 还有下一页
-            item_index = 0;
             // page变成下一页
             Page* next_page = buffer_pool_manager->FetchPage(next_page_id);
             page = reinterpret_cast<LeafPage *>(next_page -> GetData());
         } else{
-            item_index++;
+            // page满 变成-1
+            item_index--;
         }
     }
     else{
