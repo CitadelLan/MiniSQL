@@ -26,10 +26,12 @@ bool TableHeap::InsertTuple(Row &row, Transaction *txn) {
 
       /* 对新的page做双向链接 */
       targetPage->Init(nextPgId, currPage->GetPageId(), log_manager_, txn);
-      currPage->SetNextPageId(targetPage->GetPageId());
+      currPage->SetNextPageId(nextPgId);
 
       /* 对于新分配空间的页，需要填充数据 */
       targetPage->InsertTuple(row, schema_, txn, lock_manager_, log_manager_);
+      buffer_pool_manager_->UnpinPage(targetPage->GetPageId(), true);
+      break;
     }
     currPage = reinterpret_cast<TablePage *>(buffer_pool_manager_->FetchPage(nextPgId));
     buffer_pool_manager_->UnpinPage(currPage->GetPageId(), false);
@@ -64,7 +66,7 @@ bool TableHeap::UpdateTuple(const Row &row, const RowId &rid, Transaction *txn) 
       (buffer_pool_manager_->FetchPage(rid.GetPageId()));
   bool update_indicator;
 
-  if(currPg)  return false; // 未找到页
+  if(!currPg)  return false; // 未找到页
 
   /* 保存当前Page */
   Row historyRow(rid);
@@ -140,9 +142,8 @@ void TableHeap::DeleteTable(page_id_t page_id) {
 TableIterator TableHeap::Begin(Transaction *txn) {
   TablePage *currPg;
   page_id_t currPgId = first_page_id_;
-  RowId headRID = INVALID_ROWID;
-  Row  *retRow = nullptr;
-  bool isFound;
+  RowId headRID;
+  bool isFound = true;
 
   /* Begin最大的问题在于原来TableHeap里存储的首页id可能被删除
    * 所以在Begin中需要重新定位实际的首页id，并做重定向 */
@@ -157,7 +158,7 @@ TableIterator TableHeap::Begin(Transaction *txn) {
   }
 
   if(isFound){
-    retRow = new Row(headRID);
+    Row  *retRow = new Row(headRID);
     GetTuple(retRow, nullptr);
     return TableIterator(retRow, this);
   }
@@ -169,5 +170,5 @@ TableIterator TableHeap::Begin(Transaction *txn) {
  * TODO: Student Implement
  */
 TableIterator TableHeap::End() {
-  return TableIterator(nullptr, this);
+  return TableIterator(new Row(), this);
 }

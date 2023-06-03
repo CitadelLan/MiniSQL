@@ -22,7 +22,7 @@ bool TableIterator::operator==(const TableIterator &itr) const {
 
 /* 代码复用 */
 bool TableIterator::operator!=(const TableIterator &itr) const {
-  return !((*this) == itr);
+  return !(row->GetRowId() == itr.row->GetRowId());
 }
 
 const Row &TableIterator::operator*() {
@@ -80,7 +80,7 @@ TableIterator &TableIterator::operator++() {
     row = new Row(nextRID);         // 获得rid
     source->GetTuple(row, nullptr); // 获得tuple
   }
-  else  row = nullptr;
+  else  row = new Row();
 
   bpm->UnpinPage(currPgId, false);
 

@@ -59,7 +59,7 @@ uint32_t Row::DeserializeFrom(char *buf, Schema *schema) {
    * fields_       : Fields::SerializeTo() */
 
   ASSERT(schema != nullptr, "Invalid schema before serialize.");
-  ASSERT(fields_.empty(), "Non empty field in row.");
+  // ASSERT(fields_.empty(), "Non empty field in row.");
 
   uint32_t ofs = 0;
   uint32_t vctSize;

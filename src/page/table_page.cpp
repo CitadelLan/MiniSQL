@@ -29,17 +29,20 @@ bool TablePage::InsertTuple(Row &row, Schema *schema, Transaction *txn, LockMana
   }
   // Otherwise we claim available free space..
   SetFreeSpacePointer(GetFreeSpacePointer() - serialized_size);
+
+  // Set rid
+  row.SetRowId(RowId(GetTablePageId(), i));
+
   uint32_t __attribute__((unused)) write_bytes = row.SerializeTo(GetData() + GetFreeSpacePointer(), schema);
   ASSERT(write_bytes == serialized_size, "Unexpected behavior in row serialize.");
 
   // Set the tuple.
   SetTupleOffsetAtSlot(i, GetFreeSpacePointer());
   SetTupleSize(i, serialized_size);
-  // Set rid
-  row.SetRowId(RowId(GetTablePageId(), i));
   if (i == GetTupleCount()) {
     SetTupleCount(GetTupleCount() + 1);
   }
+
   return true;
 }
 
@@ -120,7 +123,6 @@ void TablePage::ApplyDelete(const RowId &rid, Transaction *txn, LogManager *log_
           tuple_offset - free_space_pointer);
   SetFreeSpacePointer(free_space_pointer + tuple_size);
   SetTupleSize(slot_num, 0);
-  SetTupleCount(GetTupleCount() - 1);
   SetTupleOffsetAtSlot(slot_num, 0);
 
   // Update all tuple offsets.
@@ -181,6 +183,10 @@ bool TablePage::GetNextTupleRid(const RowId &cur_rid, RowId *next_rid) {
   // Find and return the first valid tuple after our current slot number.
   for (auto i = cur_rid.GetSlotNum() + 1; i < GetTupleCount(); i++) {
     if (!IsDeleted(GetTupleSize(i))) {
+      if(i == 1) {
+        int a = GetTupleCount();
+        int b = 0;
+      }
       next_rid->Set(GetTablePageId(), i);
       return true;
     }
