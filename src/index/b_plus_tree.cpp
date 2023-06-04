@@ -29,16 +29,15 @@ BPlusTree::BPlusTree(index_id_t index_id, BufferPoolManager *buffer_pool_manager
 
 void BPlusTree::ClrDeletePages()
 {
-  for(int i=0; i<int(delete_pages.size()); i++)
-  {
-    buffer_pool_manager_->DeletePage(delete_pages[i]);
-  }
-  delete_pages.clear();
-  return ;
+    for (int delete_page : delete_pages)
+        buffer_pool_manager_->DeletePage(delete_page);
+
+    delete_pages.clear();
 }
 
-// void BPlusTree::Destroy(page_id_t current_page_id) {
-// }
+ void BPlusTree::Destroy(page_id_t current_page_id) {
+    ClrDeletePages();
+ }
 
 /*
  * Helper function to decide whether current b+tree is empty
@@ -317,7 +316,7 @@ bool BPlusTree::CoalesceOrRedistribute(N *&node, Transaction *transaction) {
   }
   else 
   {
-    bool if_should_delete = Coalesce(&sibling_node, &node, &tmp_parent_page, index);
+    bool if_should_delete = Coalesce(sibling_node, node, tmp_parent_page, index);
     if(if_should_delete)
     {
       delete_pages.push_back(tmp_parent_page->GetPageId());
