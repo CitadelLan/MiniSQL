@@ -96,6 +96,8 @@ TEST(TableHeapTest, MyTHTest)
 
     // RID.push_back(row.GetRowId());
     row_values.emplace(row.GetRowId().Get(), fields);
+    // delete fields;
+    delete[] characters;
   }
 
   /* 2. 检验Begin()(侧面检验GetTuple()) End() it++(侧面检验++it) */
@@ -133,4 +135,5 @@ TEST(TableHeapTest, MyTHTest)
   delete table_heap;
   delete bpm_;
   delete disk_mgr_;
+  delete fields;
 }

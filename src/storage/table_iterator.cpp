@@ -14,15 +14,22 @@ TableIterator::TableIterator(Row *row, TableHeap *source)
 TableIterator::TableIterator(const TableIterator &other)
 : row(other.row), source(other.source) {}
 
-TableIterator::~TableIterator() {}
+TableIterator::~TableIterator() {
+}
 
 bool TableIterator::operator==(const TableIterator &itr) const {
-  return row->GetRowId() == itr.row->GetRowId();
+  if(!itr.row)
+    return row == nullptr;
+  else
+    return row->GetRowId() == itr.row->GetRowId();
 }
 
 /* 代码复用 */
 bool TableIterator::operator!=(const TableIterator &itr) const {
-  return !(row->GetRowId() == itr.row->GetRowId());
+  if(!itr.row)
+    return row != nullptr;
+  else
+    return !(row->GetRowId() == itr.row->GetRowId());
 }
 
 const Row &TableIterator::operator*() {
@@ -80,7 +87,7 @@ TableIterator &TableIterator::operator++() {
     row = new Row(nextRID);         // 获得rid
     source->GetTuple(row, nullptr); // 获得tuple
   }
-  else  row = new Row();
+  else  row = nullptr;
 
   bpm->UnpinPage(currPgId, false);
 

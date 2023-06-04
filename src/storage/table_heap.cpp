@@ -170,5 +170,5 @@ TableIterator TableHeap::Begin(Transaction *txn) {
  * TODO: Student Implement
  */
 TableIterator TableHeap::End() {
-  return TableIterator(new Row(), this);
+  return TableIterator(nullptr, this);
 }
