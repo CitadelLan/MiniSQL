@@ -98,21 +98,17 @@ TEST(TableHeapTest, MyTHTest)
     row_values.emplace(row.GetRowId().Get(), fields);
   }
 
-  /* 2. 检验Begin() End() it++(侧面检验++it) */
+  /* 2. 检验Begin()(侧面检验GetTuple()) End() it++(侧面检验++it) */
   int i = 0;
   for(auto it = table_heap->Begin(nullptr); it != table_heap->End(); it++, i++)
   {
-    if(i >= 60)
-    {
-      int a = 0;
-    }
     // EXPECT_EQ(it->GetRowId(), RID[i]); // 用RID比较不合适，因为插入顺序不等于空间存储顺序
     EXPECT_EQ(CmpBool::kTrue, it->GetField(0)->CompareEquals(row_values[it->GetRowId().Get()]->at(0)));
   }
   ASSERT_EQ(i, row_nums);
 
   /* 3. 检验UpdateTuple() */
-  /* 3.1. 创建新row */
+  /* 3.0. 创建新row */
   int32_t len = 20;
   char *characters = "kestrel";
   auto *fields =
@@ -121,10 +117,17 @@ TEST(TableHeapTest, MyTHTest)
                  // 析构时free
                  Field(TypeId::kTypeFloat, tmp)};
   Row row(*fields);
+  /* 3.1. 实际更新操作与验证 */
   auto HRID = table_heap->Begin(nullptr)->GetRowId();
   ASSERT_TRUE(table_heap->UpdateTuple(row, HRID, nullptr));
   auto head = table_heap->Begin(nullptr);
   ASSERT_EQ(CmpBool::kTrue, head->GetField(0)->CompareEquals(fields->at(0)));
+
+  /* 4. 检验ApplyDelete与Begin()的重新调整 */
+  head++;
+  table_heap->ApplyDelete(HRID, nullptr);
+  auto newHead = table_heap->Begin(nullptr);
+  ASSERT_EQ(CmpBool::kTrue, newHead->GetField(0)->CompareEquals(row_values[head->GetRowId().Get()]->at(0)));
 
   table_heap->FreeTableHeap();
   delete table_heap;
