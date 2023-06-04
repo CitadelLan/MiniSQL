@@ -108,6 +108,9 @@ class BPlusTree {
   KeyManager processor_;
   int leaf_max_size_;
   int internal_max_size_;
+  //new added
+  std::vector<page_id_t> delete_pages;
+  void ClrDeletePages();
 };
 
 #endif  // MINISQL_B_PLUS_TREE_H
