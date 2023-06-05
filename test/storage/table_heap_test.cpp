@@ -125,8 +125,9 @@ TEST(TableHeapTest, MyTHTest)
   table_heap->ApplyDelete(HRID, nullptr);
   auto newHead = table_heap->Begin(nullptr);
   ASSERT_EQ(CmpBool::kTrue, newHead->GetField(0)->CompareEquals(row_values[head->GetRowId().Get()].at(0)));
-  newHead = TableIterator();  // 避免double free
+  newHead = table_heap->End();  // 避免double free
 
+  delete table_heap;
   delete bpm_;
   delete disk_mgr_;
 }
