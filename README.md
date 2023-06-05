@@ -9,3 +9,4 @@
 
 ### 目前改动
 1. BPlusTree::GetValue对叶节点的RUnlatch暂时不使用（因为还不知道哪里加了latch，否则测试过不了）
+2. BPlusTree中所有WUnlatch暂不使用
