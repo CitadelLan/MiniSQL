@@ -91,7 +91,6 @@ Page *BufferPoolManager::NewPage(page_id_t &page_id) {
         bool is_replacer = replacer_->Victim(&victim_frameId);
         if(!is_replacer) return nullptr;
     }
-
     /* 3.Set the page ID output parameter. Update P's metadata, zero out memory and add P to the page table. */
     page_id = AllocatePage();
     Page *new_page = pages_ + victim_frameId;

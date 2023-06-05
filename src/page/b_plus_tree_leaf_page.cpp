@@ -59,7 +59,7 @@ int LeafPage::KeyIndex(const GenericKey *key, const KeyManager &KM) {
 
     while(L <= R)
     {
-        M = (L+R)/2;  // 中间项
+        M = (L + R)/2;  // 中间项
         int direction = KM.CompareKeys(key, KeyAt(M));  // 判断中间项与key的大小关系
 
         /* 按照不同比较情况决定新的二分范围
@@ -170,7 +170,8 @@ bool LeafPage::Lookup(const GenericKey *key, RowId &value, const KeyManager &KM)
     if(GetSize() == 0)  return false;
 
     int index = KeyIndex(key, KM);
-    if(index >= GetSize())  return false;
+    // cout << index << " ";
+    if(index >= GetSize()) return false;
 
     GenericKey *target = KeyAt(index);
 
@@ -196,19 +197,15 @@ int LeafPage::RemoveAndDeleteRecord(const GenericKey *key, const KeyManager &KM)
     int index = KeyIndex(key, KM);
     int size = GetSize() - 1;
 
-    if(index == -1){
-        return GetSize();
-    } else {
-        // 从左向右开始更新leaf node
-        for(int i = index; i < size; i++){
-            SetKeyAt(index, KeyAt(index + 1));
-            SetValueAt(index, ValueAt(index + 1));
-        }
-
-        // 更新size
-        SetSize(size);
-        return size;
+    // 从左向右开始更新leaf node
+    for(int i = index; i < size; i++){
+        SetKeyAt(i, KeyAt(i + 1));
+        SetValueAt(i, ValueAt(i + 1));
     }
+
+    // 更新size
+    SetSize(size);
+    return size;
 }
 
 /*****************************************************************************

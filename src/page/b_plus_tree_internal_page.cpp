@@ -19,6 +19,8 @@
  * and set max page size
  */
 void InternalPage::Init(page_id_t page_id, page_id_t parent_id, int key_size, int max_size) {
+  max_size = ((INTERNAL_PAGE_SIZE - INTERNAL_PAGE_HEADER_SIZE)/
+                        (sizeof(page_id_t)+key_size))-1;
   SetPageType(IndexPageType::INTERNAL_PAGE);
   SetPageId(page_id);
   SetParentPageId(parent_id);

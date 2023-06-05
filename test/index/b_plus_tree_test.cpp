@@ -9,7 +9,7 @@
 static const std::string db_name = "bp_tree_insert_test.db";
 
 TEST(BPlusTreeTests, SampleTest) {
-  // Init engine
+  /* 0. 初始化 */
   DBStorageEngine engine(db_name);
   std::vector<Column *> columns = {
       new Column("int", TypeId::kTypeInt, 0, false, false),
@@ -19,7 +19,7 @@ TEST(BPlusTreeTests, SampleTest) {
   BPlusTree tree(0, engine.bpm_, KP);
   TreeFileManagers mgr("tree_");
   // Prepare data
-  const int n = 30;
+  const int n = 3000;
   vector<GenericKey *> keys;
   vector<RowId> values;
   vector<GenericKey *> delete_seq;
@@ -69,9 +69,4 @@ TEST(BPlusTreeTests, SampleTest) {
     ASSERT_TRUE(tree.GetValue(delete_seq[i], ans));
     ASSERT_EQ(kv_map[delete_seq[i]], ans[ans.size() - 1]);
   }
-}
-
-TEST(BPlusTreeTests, MyTest)
-{
-
 }

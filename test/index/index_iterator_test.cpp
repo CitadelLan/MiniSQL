@@ -2,11 +2,13 @@
 #include "gtest/gtest.h"
 #include "index/b_plus_tree.h"
 #include "index/comparator.h"
+#include "utils/tree_file_mgr.h"
 
 static const std::string db_name = "bp_tree_insert_test.db";
 
 TEST(BPlusTreeTests, IndexIteratorTest) {
   // Init engine
+  TreeFileManagers mgr("tree_");
   DBStorageEngine engine(db_name);
   std::vector<Column *> columns = {
       new Column("int", TypeId::kTypeInt, 0, false, false),
@@ -21,23 +23,27 @@ TEST(BPlusTreeTests, IndexIteratorTest) {
     std::vector<Field> fields{Field(TypeId::kTypeInt, i)};
     KP.SerializeFromKey(key, Row(fields), table_schema);
     insert_key.emplace_back(key);
-    tree.Insert(key, RowId(i * 100), nullptr);
+    RowId tmp(i * 100);
+    tree.Insert(key, tmp, nullptr);
   }
   // Generate delete record
   vector<GenericKey *> delete_key;
-  for (int i = 2; i <= 50; i += 2) {
+  for (int i = 2; i <= 50; i += 2) {  // 删去偶数位key
     GenericKey *key = KP.InitKey();
     std::vector<Field> fields{Field(TypeId::kTypeInt, i)};
     KP.SerializeFromKey(key, Row(fields), table_schema);
     delete_key.emplace_back(key);
     tree.Remove(key);
   }
+  cout << endl;
+  tree.PrintTree(mgr[0]);
   // Search keys
   vector<RowId> v;
   vector<GenericKey *> not_delete_key;
   for (auto key : delete_key) {
     ASSERT_FALSE(tree.GetValue(key, v));
   }
+  cout << endl;
   for (int i = 1; i <= 49; i += 2) {
     GenericKey *key = KP.InitKey();
     std::vector<Field> fields{Field(TypeId::kTypeInt, i)};
