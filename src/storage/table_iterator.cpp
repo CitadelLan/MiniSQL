@@ -15,6 +15,8 @@ TableIterator::TableIterator(const TableIterator &other)
 : row(other.row), source(other.source) {}
 
 TableIterator::~TableIterator() {
+  if(row)
+    delete row;
 }
 
 bool TableIterator::operator==(const TableIterator &itr) const {
@@ -82,16 +84,16 @@ TableIterator &TableIterator::operator++() {
     }
   }
 
-  delete row; // 释放空间防止内存泄漏
+  //delete row; // 释放空间防止内存泄漏
   if(isFound) {
-    row = new Row(nextRID);         // 获得rid
+    row->SetRowId(nextRID);         // 获得rid
     source->GetTuple(row, nullptr); // 获得tuple
   }
   else  row = nullptr;
 
   bpm->UnpinPage(currPgId, false);
 
-  return *this;
+  return (*this);
 }
 
 // iter++

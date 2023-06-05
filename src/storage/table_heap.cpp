@@ -158,7 +158,7 @@ TableIterator TableHeap::Begin(Transaction *txn) {
   }
 
   if(isFound){
-    Row  *retRow = new Row(headRID);
+    Row *retRow = new Row(headRID);
     GetTuple(retRow, nullptr);
     return TableIterator(retRow, this);
   }
