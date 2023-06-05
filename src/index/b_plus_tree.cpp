@@ -24,7 +24,7 @@ BPlusTree::BPlusTree(index_id_t index_id, BufferPoolManager *buffer_pool_manager
     }
     buffer_pool_manager->UnpinPage(INDEX_ROOTS_PAGE_ID, true);
     buffer_pool_manager_->UnpinPage(root_page_id_, true);
-    leaf_max_size_ = ((PAGE_SIZE - LEAF_PAGE_HEADER_SIZE)/(sizeof(page_id_t)+processor_.GetKeySize()))-1;
+    leaf_max_size_ = (PAGE_SIZE - LEAF_PAGE_HEADER_SIZE)/(sizeof(std::pair<GenericKey *, page_id_t>)) - 1;
     internal_max_size_ = INTERNAL_PAGE_SIZE;
 }
 
@@ -139,7 +139,6 @@ bool BPlusTree::InsertIntoLeaf(GenericKey *key, RowId &value, Transaction *trans
   }
 
   /* 检查插入是否溢出 */
-  int org_size = tmp_leaf_page->GetSize();
   int new_size = tmp_leaf_page->Insert(key, value, processor_);
 
   if (new_size < leaf_max_size_)
@@ -160,7 +159,6 @@ bool BPlusTree::InsertIntoLeaf(GenericKey *key, RowId &value, Transaction *trans
     buffer_pool_manager_->UnpinPage(sibling_leaf_node->GetPageId(), true);
     return true;
   }
-  return false;
 }
 
 /*
@@ -209,7 +207,7 @@ void BPlusTree::InsertIntoParent(BPlusTreePage *old_node, GenericKey *key, BPlus
   {
     Page* new_page = buffer_pool_manager_->NewPage(root_page_id_);
     InternalPage *new_root = reinterpret_cast<InternalPage *>(new_page->GetData());
-    new_root->Init(root_page_id_, INVALID_PAGE_ID, internal_max_size_);
+    new_root->Init(root_page_id_, INVALID_PAGE_ID, sizeof(std::pair<GenericKey *, page_id_t>));
     new_root->PopulateNewRoot(old_node->GetPageId(), key, new_node->GetPageId());
     old_node->SetParentPageId(new_root->GetPageId());
     new_node->SetParentPageId(new_root->GetPageId());

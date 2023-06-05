@@ -19,8 +19,7 @@
  * and set max page size
  */
 void InternalPage::Init(page_id_t page_id, page_id_t parent_id, int key_size, int max_size) {
-  max_size = ((INTERNAL_PAGE_SIZE - INTERNAL_PAGE_HEADER_SIZE)/
-                        (sizeof(page_id_t)+key_size))-1;
+  max_size = INTERNAL_PAGE_SIZE;
   SetPageType(IndexPageType::INTERNAL_PAGE);
   SetPageId(page_id);
   SetParentPageId(parent_id);
@@ -73,11 +72,13 @@ void InternalPage::PairCopy(void *dest, void *src, int pair_num) {
  * 用了二分查找
  */
 page_id_t InternalPage::Lookup(const GenericKey *key, const KeyManager &KM) {
-  int L = 1, R = GetSize() - 1, M;
+  int L = 0, R = GetSize() - 1, M;
 
   while(L <= R)
   {
     M = (L+R)/2;  // 中间项
+    if(M == 0)  return ValueAt(L);
+
     int direction = KM.CompareKeys(key, KeyAt(M));  // 判断中间项与key的大小关系
 
     /* 按照不同比较情况决定新的二分范围

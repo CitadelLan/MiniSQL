@@ -22,7 +22,7 @@
  * 未初始化next_page_id
  */
 void LeafPage::Init(page_id_t page_id, page_id_t parent_id, int key_size, int max_size) {
-  max_size = ((PAGE_SIZE - LEAF_PAGE_HEADER_SIZE) / (key_size + sizeof(page_id_t))) - 1;
+  max_size = (PAGE_SIZE - LEAF_PAGE_HEADER_SIZE) / (sizeof(std::pair<GenericKey *, page_id_t>)) - 1;
   SetPageType(IndexPageType::LEAF_PAGE);
   SetPageId(page_id);
   SetParentPageId(parent_id);
