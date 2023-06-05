@@ -19,7 +19,7 @@ class KeyManager {
 
   inline void SerializeFromKey(GenericKey *key_buf, const Row &key, Schema *schema) const {
     // initialize to 0
-    [[maybe_unused]] uint32_t size = key.GetSerializedSize(schema);
+    uint32_t size = key.GetSerializedSize(schema);
     ASSERT(key.GetFieldCount() == schema->GetColumnCount(), "field nums not match.");
     ASSERT(size <= (uint32_t)key_size_, "Index key size exceed max key size.");
     memset(key_buf->data, 0, key_size_);
@@ -27,7 +27,7 @@ class KeyManager {
   }
 
   inline void DeserializeToKey(const GenericKey *key_buf, Row &key, Schema *schema) const {
-    [[maybe_unused]] uint32_t ofs = key.DeserializeFrom(const_cast<char *>(key_buf->data), schema);
+    uint32_t ofs = key.DeserializeFrom(const_cast<char *>(key_buf->data), schema);
     ASSERT(ofs <= (uint32_t)key_size_, "Index key size exceed max key size.");
   }
 
@@ -72,3 +72,4 @@ class KeyManager {
 };
 
 #endif  // MINISQL_GENERIC_KEY_H
+

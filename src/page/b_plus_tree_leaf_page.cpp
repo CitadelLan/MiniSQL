@@ -22,12 +22,14 @@
  * 未初始化next_page_id
  */
 void LeafPage::Init(page_id_t page_id, page_id_t parent_id, int key_size, int max_size) {
-    SetPageType(IndexPageType::LEAF_PAGE);
-    SetPageId(page_id);
-    SetParentPageId(parent_id);
-    SetKeySize(key_size);
-    SetMaxSize(max_size);
-    SetSize(0);
+  max_size = ((PAGE_SIZE - LEAF_PAGE_HEADER_SIZE) / (key_size + sizeof(page_id_t))) - 1;
+  SetPageType(IndexPageType::LEAF_PAGE);
+  SetPageId(page_id);
+  SetParentPageId(parent_id);
+  SetKeySize(key_size);
+  SetMaxSize(max_size);
+  SetNextPageId(INVALID_PAGE_ID);  // 测试中发现好像没有成功置-1，显示添加一下
+  SetSize(0);
 }
 
 /**
@@ -69,8 +71,8 @@ int LeafPage::KeyIndex(const GenericKey *key, const KeyManager &KM) {
         else                    // key等于中间项（右侧指针）
             return M;
     }
-    /* 没找到返回-1 */
-    return -1;
+
+    return L;
 }
 
 /*
@@ -120,8 +122,9 @@ std::pair<GenericKey *, RowId> LeafPage::GetItem(int index) {
 int LeafPage::Insert(GenericKey *key, const RowId &value, const KeyManager &KM) {
 
     int i;
+    int target = KeyIndex(key, KM);
     /* 从后向前更新key和rid，直到目的key > key[i]， 或者插入index为0 */
-    for(i = GetSize(); KM.CompareKeys(key, KeyAt(i)) == -1 && i > 0; i--){
+    for(i = GetSize(); i > target; i--){
         SetKeyAt(i, KeyAt(i-1));
         SetValueAt(i, ValueAt(i-1));
     }
@@ -164,12 +167,19 @@ void LeafPage::CopyNFrom(void *src, int size) {
  * If the key does not exist, then return false
  */
 bool LeafPage::Lookup(const GenericKey *key, RowId &value, const KeyManager &KM) {
+    if(GetSize() == 0)  return false;
+
     int index = KeyIndex(key, KM);
-    if(index != -1){
+    if(index >= GetSize())  return false;
+
+    GenericKey *target = KeyAt(index);
+
+    if(KM.CompareKeys(key, target)){  // 非零返回，说明未出现
+        return false;
+    }
+    else {
         value = ValueAt(index);
         return true;
-    } else{     // 没有找到
-        return false;
     }
 }
 

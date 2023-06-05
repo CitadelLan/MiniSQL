@@ -88,7 +88,7 @@ page_id_t InternalPage::Lookup(const GenericKey *key, const KeyManager &KM) {
       return ValueAt(M);
   }
 
-  return ValueAt(R);  // L一定在最后会大于R（L = R + 1），所以返回R（考虑到可能会是Value(0)）
+  return ValueAt(L);  // L一定在最后会大于R（L = R + 1），所以返回R（考虑到可能会是Value(0)）
 }
 
 /*****************************************************************************

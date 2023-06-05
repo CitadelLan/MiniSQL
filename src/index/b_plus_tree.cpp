@@ -15,16 +15,18 @@ BPlusTree::BPlusTree(index_id_t index_id, BufferPoolManager *buffer_pool_manager
                      int leaf_max_size, int internal_max_size)
     : index_id_(index_id),
       buffer_pool_manager_(buffer_pool_manager),
-      processor_(KM),
-      leaf_max_size_(leaf_max_size),
-      internal_max_size_(internal_max_size) {
-        auto root_page = reinterpret_cast<IndexRootsPage *>(buffer_pool_manager->FetchPage(INDEX_ROOTS_PAGE_ID));
-        if (!root_page->GetRootId(index_id, &this->root_page_id_)) 
-        {
-          this->root_page_id_ = INVALID_PAGE_ID;
-        }
-        buffer_pool_manager->UnpinPage(INDEX_ROOTS_PAGE_ID, true);
-        buffer_pool_manager_->UnpinPage(root_page_id_, true);
+      processor_(KM)
+{
+    auto root_page = reinterpret_cast<IndexRootsPage *>(buffer_pool_manager->FetchPage(INDEX_ROOTS_PAGE_ID));
+    if (!root_page->GetRootId(index_id, &this->root_page_id_))
+    {
+      this->root_page_id_ = INVALID_PAGE_ID;
+    }
+    buffer_pool_manager->UnpinPage(INDEX_ROOTS_PAGE_ID, true);
+    buffer_pool_manager_->UnpinPage(root_page_id_, true);
+    leaf_max_size_ = ((PAGE_SIZE - LEAF_PAGE_HEADER_SIZE)/(sizeof(page_id_t)+processor_.GetKeySize()))-1;
+    internal_max_size_ = ((INTERNAL_PAGE_SIZE - INTERNAL_PAGE_HEADER_SIZE)/
+                          (sizeof(page_id_t)+processor_.GetKeySize()))-1;
 }
 
 void BPlusTree::ClrDeletePages()
@@ -69,13 +71,13 @@ bool BPlusTree::GetValue(const GenericKey *key, std::vector<RowId> &result, Tran
   RowId tmp_value;
   if(!leaf_node->Lookup(key, tmp_value, processor_))
   {
-    leaf_page->RUnlatch();
+    //leaf_page->RUnlatch();
     buffer_pool_manager_->UnpinPage(leaf_page->GetPageId(), false);
     return false;
   }
   else 
   {
-    leaf_page->RUnlatch();
+    //leaf_page->RUnlatch();
     buffer_pool_manager_->UnpinPage(leaf_page->GetPageId(), false);
     result.push_back(tmp_value);
     return true;
@@ -92,7 +94,7 @@ bool BPlusTree::GetValue(const GenericKey *key, std::vector<RowId> &result, Tran
  * @return: since we only support unique key, if user try to insert duplicate
  * keys return false, otherwise return true.
  */
-bool BPlusTree::Insert(GenericKey *key, const RowId &value, Transaction *transaction) {
+bool BPlusTree::Insert(GenericKey *key, RowId &value, Transaction *transaction) {
   if (IsEmpty()) 
   {
     StartNewTree(key, value);
@@ -111,7 +113,7 @@ void BPlusTree::StartNewTree(GenericKey *key, const RowId &value) {
   Page* root_page = buffer_pool_manager_->NewPage(root_page_id_);
 
   LeafPage *leaf_page = reinterpret_cast<LeafPage *>(root_page->GetData());
-  leaf_page->Init(root_page_id_, INVALID_PAGE_ID, leaf_max_size_);
+  leaf_page->Init(root_page_id_, INVALID_PAGE_ID, processor_.GetKeySize(), leaf_max_size_);
   leaf_page->Insert(key, value, processor_);
 
   buffer_pool_manager_->UnpinPage(leaf_page->GetPageId(), true);
@@ -127,25 +129,28 @@ void BPlusTree::StartNewTree(GenericKey *key, const RowId &value) {
  * @return: since we only support unique key, if user try to insert duplicate
  * keys return false, otherwise return true.
  */
-bool BPlusTree::InsertIntoLeaf(GenericKey *key, const RowId &value, Transaction *transaction) {
+bool BPlusTree::InsertIntoLeaf(GenericKey *key, RowId &value, Transaction *transaction) {
   Page* find_leaf_page = this->FindLeafPage(key);
   LeafPage* tmp_leaf_page = reinterpret_cast<LeafPage*>(find_leaf_page->GetData());
-  int org_size = tmp_leaf_page->GetSize();
-  int new_size = tmp_leaf_page->Insert(key, value, processor_);
 
-  if (new_size == org_size) 
+  /* 检查是否是重复键 */
+  if(tmp_leaf_page->Lookup(key, value, processor_))
   {
-    find_leaf_page->WUnlatch();
     buffer_pool_manager_->UnpinPage(find_leaf_page->GetPageId(), false);
     return false;
   }
-  else if (new_size < leaf_max_size_) 
+
+  /* 检查插入是否溢出 */
+  int org_size = tmp_leaf_page->GetSize();
+  int new_size = tmp_leaf_page->Insert(key, value, processor_);
+
+  if (new_size < leaf_max_size_)
   {
     find_leaf_page->WUnlatch();
     buffer_pool_manager_->UnpinPage(find_leaf_page->GetPageId(), true);
     return true;
   }
-  else 
+  else
   {
     auto sibling_leaf_node = Split(tmp_leaf_page, transaction);
     sibling_leaf_node->SetNextPageId(tmp_leaf_page->GetNextPageId());
@@ -457,7 +462,20 @@ IndexIterator BPlusTree::Begin(const GenericKey *key) {
  * @return : index iterator
  */
 IndexIterator BPlusTree::End() {
-  return IndexIterator();
+    /* 找到最左侧叶节点 */
+    Page *leftistPg = FindLeafPage(nullptr, root_page_id_, true);
+    LeafPage *currLeaf = reinterpret_cast<LeafPage *>(leftistPg->GetData());
+
+    /* 找到最右侧叶节点 */
+    while(currLeaf->GetNextPageId() != INVALID_PAGE_ID)
+    {
+      Page *nextPg = buffer_pool_manager_->FetchPage(currLeaf->GetNextPageId());
+      auto nextLeaf = reinterpret_cast<LeafPage *>(nextPg->GetData());
+      buffer_pool_manager_->UnpinPage(currLeaf->GetPageId(), false);
+      currLeaf = nextLeaf;
+    }
+
+    return IndexIterator(currLeaf->GetPageId(), buffer_pool_manager_, currLeaf->GetSize() - 1);
 }
 
 /*****************************************************************************
