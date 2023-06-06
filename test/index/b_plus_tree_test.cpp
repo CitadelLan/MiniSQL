@@ -19,7 +19,7 @@ TEST(BPlusTreeTests, SampleTest) {
   BPlusTree tree(0, engine.bpm_, KP);
   TreeFileManagers mgr("tree_");
   // Prepare data
-  const int n = 500;
+  const int n = 3000;
   vector<GenericKey *> keys;
   vector<RowId> values;
   vector<GenericKey *> delete_seq;
@@ -43,6 +43,8 @@ TEST(BPlusTreeTests, SampleTest) {
   }
   // Insert data
   for (int i = 0; i < n; i++) {
+    if(i >= 170)
+      int a = 0;
     tree.Insert(keys[i], values[i]);
   }
   ASSERT_TRUE(tree.Check());

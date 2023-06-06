@@ -6,6 +6,7 @@
 #define pair_size (GetKeySize() + sizeof(page_id_t))
 #define key_off 0
 #define val_off GetKeySize()
+#define INTERNAL_PAGE_SIZE (((PAGE_SIZE - INTERNAL_PAGE_HEADER_SIZE) / (pair_size)) - 1)
 
 /**
  * TODO: Student Implement
@@ -19,11 +20,11 @@
  * and set max page size
  */
 void InternalPage::Init(page_id_t page_id, page_id_t parent_id, int key_size, int max_size) {
-  max_size = INTERNAL_PAGE_SIZE;
   SetPageType(IndexPageType::INTERNAL_PAGE);
   SetPageId(page_id);
   SetParentPageId(parent_id);
   SetKeySize(key_size);
+  max_size = INTERNAL_PAGE_SIZE;
   SetSize(0);
   SetMaxSize(max_size);
 }
@@ -72,12 +73,11 @@ void InternalPage::PairCopy(void *dest, void *src, int pair_num) {
  * 用了二分查找
  */
 page_id_t InternalPage::Lookup(const GenericKey *key, const KeyManager &KM) {
-  int L = 0, R = GetSize() - 1, M;
+  int L = 1, R = GetSize() - 1, M;
 
   while(L <= R)
   {
     M = (L+R)/2;  // 中间项
-    if(M == 0)  return ValueAt(L);
 
     int direction = KM.CompareKeys(key, KeyAt(M));  // 判断中间项与key的大小关系
 
@@ -91,7 +91,7 @@ page_id_t InternalPage::Lookup(const GenericKey *key, const KeyManager &KM) {
       return ValueAt(M);
   }
 
-  return ValueAt(L);  // L一定在最后会大于R（L = R + 1），所以返回R（考虑到可能会是Value(0)）
+  return ValueAt(R);  // L一定在最后会大于R（L = R + 1），所以返回R（考虑到可能会是Value(0)）
 }
 
 /*****************************************************************************
