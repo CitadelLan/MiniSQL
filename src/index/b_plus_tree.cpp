@@ -220,7 +220,7 @@ void BPlusTree::InsertIntoParent(BPlusTreePage *old_node, GenericKey *key, BPlus
   InternalPage *parent_node = reinterpret_cast<InternalPage *>(parent_page->GetData());
   int new_size = parent_node->InsertNodeAfter(old_node->GetPageId(), key, new_node->GetPageId());
 
-  if (new_size < internal_max_size_) 
+  if (new_size < internal_max_size_)
   {
     buffer_pool_manager_->UnpinPage(parent_page->GetPageId(), true);
     return;

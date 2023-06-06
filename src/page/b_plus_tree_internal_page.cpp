@@ -141,7 +141,7 @@ int InternalPage::InsertNodeAfter(const page_id_t &old_value, GenericKey *new_ke
  * buffer_pool_manager 是干嘛的？传给CopyNFrom()用于Fetch数据页
  */
 void InternalPage::MoveHalfTo(InternalPage *recipient, BufferPoolManager *buffer_pool_manager) {
-  ASSERT(GetSize() > GetMaxSize(), "Error on split: Page not full");  // 因为SPLIT是在溢出时使用，这里做预判
+  ASSERT(GetSize() >= GetMaxSize(), "Error on split: Page not full");  // 因为SPLIT是在溢出时使用，这里做预判
 
   int end = GetSize() - 1;  // 拷贝序列末尾 = 序列末尾：下标0开始需要 -1
   int start = end / 2 + 1;  // 拷贝序列开头 = 中间项+1
