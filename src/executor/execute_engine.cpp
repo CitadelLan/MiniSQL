@@ -172,7 +172,7 @@ dberr_t ExecuteEngine::Execute(pSyntaxNode ast) {
         }
       }
       int k = 0;
-      for (const auto &column : schema->GetColumns()) {
+      for (const auto &column : schema->GetColumns(0)) {
         data_width[k] = max(data_width[k], int(column->GetName().length()));
         k++;
       }
@@ -334,7 +334,7 @@ dberr_t ExecuteEngine::ExecuteShowTables(pSyntaxNode ast, ExecuteContext *contex
 }
 
 /**
- * TODO: Student Implement
+ * TODO: Student Implement(need fixing)
  */
 dberr_t ExecuteEngine::ExecuteCreateTable(pSyntaxNode ast, ExecuteContext *context) {
 #ifdef ENABLE_EXECUTE_DEBUG
