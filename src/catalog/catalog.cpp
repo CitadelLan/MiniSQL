@@ -56,7 +56,7 @@ CatalogMeta *CatalogMeta::DeserializeFrom(char *buf) {
  */
 uint32_t CatalogMeta::GetSerializedSize() const {
   //ASSERT(false, "Not Implemented yet");
-  return sizeof(uint32_t) + 2 * sizeof(unsigned long) +
+  return 3 * sizeof(uint32_t) +
          (sizeof(table_id_t) + sizeof(page_id_t)) * table_meta_pages_.size() +
          (sizeof(index_id_t) + sizeof(page_id_t)) * index_meta_pages_.size();
 }
@@ -70,37 +70,34 @@ CatalogManager::CatalogManager(BufferPoolManager *buffer_pool_manager, LockManag
                                LogManager *log_manager, bool init)
     : buffer_pool_manager_(buffer_pool_manager), lock_manager_(lock_manager), log_manager_(log_manager) {
     //ASSERT(false, "Not Implemented yet");
-    std::atomic_init(&next_table_id_,0);
-    std::atomic_init(&next_index_id_,0);
-    if (init) 
+    /* 需要初始化 */
+    if (init)
     {
+      std::atomic_init(&next_table_id_,0);
+      std::atomic_init(&next_index_id_,0);
       catalog_meta_ = CatalogMeta::NewInstance();
-    } else {
+    }
+    /* 不需要初始化 */
+    else {
+      /* 1.1. 读取CATALOG_META_PAGE里的信息（反序列化） */
       auto meta_page = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID);
       catalog_meta_ = CatalogMeta::DeserializeFrom(meta_page->GetData());
 
+      /* 1.2. 更新CatalogManager里table相关信息 */
       for (auto it : catalog_meta_->table_meta_pages_)
       {
-        auto table_meta_page = buffer_pool_manager_->FetchPage(it.second);
-        TableMetadata *table_meta = nullptr;
-        TableMetadata::DeserializeFrom(table_meta_page->GetData(), table_meta);
-        auto table_heap = TableHeap::Create(buffer_pool_manager_, table_meta->GetFirstPageId(), table_meta->GetSchema(),log_manager_, lock_manager_);
-        table_names_[table_meta->GetTableName()] = table_meta->GetTableId();
-        TableInfo *table_info = TableInfo::Create();
-        table_info->Init(table_meta, table_heap);
-        tables_[table_meta->GetTableId()] = table_info;
+        dberr_t verify = LoadTable(it.first, it.second);
+        ASSERT(verify == DB_SUCCESS, "Error in CatalogManager::LoadTable()");
       }
 
+      /* 1.3. 更新CatalogManager里index相关信息 */
       for (auto it : catalog_meta_->index_meta_pages_)
       {
-        auto index_meta_page = buffer_pool_manager_->FetchPage(it.second);
-        IndexMetadata *index_meta;
-        IndexMetadata::DeserializeFrom(index_meta_page->GetData(), index_meta);
-        index_names_[tables_[index_meta->GetTableId()]->GetTableName()][index_meta->GetIndexName()] = index_meta->GetIndexId();
-        auto index_info = IndexInfo::Create();
-        index_info->Init(index_meta, tables_[index_meta->GetTableId()], buffer_pool_manager_);
-        indexes_[index_meta->GetIndexId()] = index_info;
+        dberr_t verify = LoadIndex(it.first, it.second);
+        ASSERT(verify == DB_SUCCESS, "Error in CatalogManager::LoadIndex()");
       }
+
+      buffer_pool_manager->UnpinPage(CATALOG_META_PAGE_ID,false);
     }
 }
 
@@ -117,26 +114,40 @@ CatalogManager::~CatalogManager() {
 
 /**
  * TODO: Student Implement
+ * 类似 next-fit 方法，在下一位置新建表
  */
 dberr_t CatalogManager::CreateTable(const string &table_name, TableSchema *schema,
                                     Transaction *txn, TableInfo *&table_info) {
-  // ASSERT(false, "Not Implemented yet");
-  if (table_names_.find(table_name) != table_names_.end()) 
-  {
+  /* 0. 如果可以找到该表，则不应该重复创建 */
+  if (table_names_.find(table_name) != table_names_.end())
     return DB_TABLE_ALREADY_EXIST;
-  }
-  auto table_id = catalog_meta_->GetNextTableId();
-  table_names_[table_name] = table_id;
+
+  table_id_t table_id = next_table_id_;
+  next_table_id_++;
   page_id_t page_id;
   auto table_meta_page = buffer_pool_manager_->NewPage(page_id);
-  catalog_meta_->table_meta_pages_[table_id] = page_id;
-  TableHeap *table_heap = TableHeap::Create(buffer_pool_manager_, schema, txn, log_manager_, lock_manager_);
+  auto table_heap = TableHeap::Create(buffer_pool_manager_, schema, txn, log_manager_, lock_manager_);
   auto table_meta = TableMetadata::Create(table_id, table_name, table_heap->GetFirstPageId(), schema);
+
   table_meta->SerializeTo(table_meta_page->GetData());
-  buffer_pool_manager_->UnpinPage(page_id, true);
+
   table_info = TableInfo::Create();
   table_info->Init(table_meta, table_heap);
-  tables_[table_id] = table_info; 
+
+  /* 缺少对unique和主键的特判 */
+
+  /* 更新CatalogMeta、CatalogManager 的 map映射 */
+  catalog_meta_->table_meta_pages_[table_id] = page_id;
+  table_names_[table_name] = table_id;
+  tables_[table_id] = table_info;
+
+  /* 因为对CatalogMeta造成了改动，所以需要将CatalogMeta写回 */
+  auto catalog = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID)->GetData();
+  catalog_meta_->SerializeTo(catalog);
+
+  buffer_pool_manager_->UnpinPage(CATALOG_META_PAGE_ID,true);
+  buffer_pool_manager_->UnpinPage(page_id, true);
+
   return DB_SUCCESS;
 }
 
@@ -144,12 +155,10 @@ dberr_t CatalogManager::CreateTable(const string &table_name, TableSchema *schem
  * TODO: Student Implement
  */
 dberr_t CatalogManager::GetTable(const string &table_name, TableInfo *&table_info) {
-  // ASSERT(false, "Not Implemented yet");
-  if (table_names_.find(table_name) == table_names_.end()) 
-  {
+  if (table_names_.find(table_name) == table_names_.end())
     return DB_TABLE_NOT_EXIST;
-  }
-  auto table_id = table_names_[table_name];
+
+  table_id_t table_id = table_names_[table_name];
   table_info = tables_[table_id];
   return DB_SUCCESS;
 }
@@ -158,14 +167,12 @@ dberr_t CatalogManager::GetTable(const string &table_name, TableInfo *&table_inf
  * TODO: Student Implement
  */
 dberr_t CatalogManager::GetTables(vector<TableInfo *> &tables) const {
-  // ASSERT(false, "Not Implemented yet");
-  if (tables_.empty()) 
-  {
+  if (tables_.empty())
     return DB_FAILED;
-  }
-  for (auto &it : tables_) {
+
+  for (auto &it : tables_)
     tables.push_back(it.second);
-  }
+
   return DB_SUCCESS;
 }
 
@@ -175,9 +182,10 @@ dberr_t CatalogManager::GetTables(vector<TableInfo *> &tables) const {
 dberr_t CatalogManager::CreateIndex(const std::string &table_name, const string &index_name,
                                     const std::vector<std::string> &index_keys, Transaction *txn,
                                     IndexInfo *&index_info, const string &index_type) {
-  // ASSERT(false, "Not Implemented yet");
+  /* 0. 检查表和索引是否已存在 */
   if (table_names_.find(table_name) == table_names_.end()) return DB_TABLE_NOT_EXIST;
   if ((index_names_[table_name].find(index_name) != index_names_[table_name].end())) return DB_INDEX_ALREADY_EXIST;
+
   auto schema = tables_[table_names_[table_name]]->GetSchema();
   auto table_info = tables_[table_names_[table_name]];
   std::vector<uint32_t> key_map;
@@ -283,25 +291,63 @@ dberr_t CatalogManager::FlushCatalogMetaPage() const {
 
 /**
  * TODO: Student Implement
+ * 1. 建立管理Table整体信息的对象
+ * 2. 更新 CatalogManager 里的信息 (map for tables)
+ */
+dberr_t CatalogManager::LoadTable(const table_id_t table_id, const page_id_t page_id) {
+  /* 0. 未能够找到对应的table_id，说明该表不存在 */
+  const std::map<table_id_t, page_id_t> &tmp = catalog_meta_->table_meta_pages_;
+  if(tmp.find(table_id) == tmp.end())
+    return DB_TABLE_NOT_EXIST;
+
+  /* 1. 建立管理Table整体信息的对象 */
+  auto table_info = TableInfo::Create();
+  /* 1.1. 取得含有表元信息的对应页，做反序列化 */
+  auto table_meta_page = buffer_pool_manager_->FetchPage(page_id);
+  TableMetadata *table_meta = nullptr;
+  TableMetadata::DeserializeFrom(table_meta_page->GetData(), table_meta);
+  /* 1.2. 建立该表的TableHeap */
+  auto table_heap = TableHeap::Create(buffer_pool_manager_,
+                                        table_meta->GetFirstPageId(), table_meta->GetSchema(),
+                                        log_manager_, lock_manager_);
+  /* 1.3. 初始化TableInfo */
+  table_info->Init(table_meta, table_heap);
+
+  /* 2.更新 CatalogManager 里的信息 (map for tables) */
+  table_names_[table_meta->GetTableName()] = table_id;
+  tables_[table_id] = table_info;
+
+  buffer_pool_manager_->UnpinPage(page_id,false);
+
+  return DB_SUCCESS;
+}
+
+
+/**
+ * TODO: Student Implement
+ * 1. 建立管理Index整体信息的对象
+ * 2. 更新 CatalogManager 里的信息 (map for indexes)
  */
 dberr_t CatalogManager::LoadIndex(const index_id_t index_id, const page_id_t page_id) {
-  // ASSERT(false, "Not Implemented yet");
-  if (indexes_.find(index_id) != indexes_.end()) 
-  {
-    return DB_INDEX_ALREADY_EXIST;
-  }
-  catalog_meta_->index_meta_pages_[index_id] = page_id;
-  auto index_mata_page = buffer_pool_manager_->FetchPage(page_id);
-  // Deserialize and get data from the page
-  IndexMetadata *index_meta;
-  IndexMetadata::DeserializeFrom(index_mata_page->GetData(), index_meta);
-  auto table_name = tables_[index_meta->GetTableId()]->GetTableName();
-  index_names_[table_name][index_meta->GetIndexName()] = index_id;
-  // Construct index info
+  /* 0. 能够找到对应的index_id，说明该索引已存在 */
+  const std::map<index_id_t, page_id_t> &imp = catalog_meta_->index_meta_pages_;
+
+  /* 1. 建立管理Index整体信息的对象 */
   auto index_info = IndexInfo::Create();
-  index_info->Init(index_meta, tables_[index_meta->GetTableId()], buffer_pool_manager_);
+  /* 1.1. 取得含有索引元信息的对应页，做反序列化 */
+  auto index_meta_page = buffer_pool_manager_->FetchPage(page_id);
+  IndexMetadata *index_meta;
+  IndexMetadata::DeserializeFrom(index_meta_page->GetData(), index_meta);
+  /* 1.2. 初始化IndexInfo */
+  table_id_t table_id = index_meta->GetTableId();
+  index_info->Init(index_meta, tables_[table_id], buffer_pool_manager_);
+
+  /* 2.更新 CatalogManager 里的信息 (map for indexes) */
   indexes_[index_id] = index_info;
-  catalog_meta_->index_meta_pages_[index_id] = page_id;
+  std::unordered_map<std::string, index_id_t> tmp;
+  tmp[index_info->GetIndexName()] = index_id;
+  index_names_[tables_[table_id]->GetTableName()] = tmp;
+
   return DB_SUCCESS;
 }
 
@@ -310,9 +356,8 @@ dberr_t CatalogManager::LoadIndex(const index_id_t index_id, const page_id_t pag
  */
 dberr_t CatalogManager::GetTable(const table_id_t table_id, TableInfo *&table_info) {
   // ASSERT(false, "Not Implemented yet");
-  if (catalog_meta_->table_meta_pages_.find(table_id) == catalog_meta_->table_meta_pages_.end())
-  {
-    return DB_TABLE_NOT_EXIST;
+  if (catalog_meta_->table_meta_pages_.find(table_id) == catalog_meta_->table_meta_pages_.end()) {
+  return DB_TABLE_NOT_EXIST;
   }
   table_info = tables_[table_id];
   return DB_SUCCESS;

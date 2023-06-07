@@ -76,9 +76,9 @@ TEST(CatalogTest, CatalogIndexTest) {
   std::vector<Column *> columns = {new Column("id", TypeId::kTypeInt, 0, false, false),
                                    new Column("name", TypeId::kTypeChar, 64, 1, true, false),
                                    new Column("account", TypeId::kTypeFloat, 2, true, false)};
-  auto schema = std::make_shared<Schema>(columns);
+  auto schema = new Schema(columns);
   Transaction txn;
-  catalog_01->CreateTable("table-1", schema.get(), &txn, table_info);
+  catalog_01->CreateTable("table-1", schema, &txn, table_info);
   ASSERT_TRUE(table_info != nullptr);
 
   IndexInfo *index_info = nullptr;
