@@ -214,11 +214,12 @@ dberr_t CatalogManager::CreateIndex(const std::string &table_name, const string 
  */
 dberr_t CatalogManager::GetIndex(const std::string &table_name, const std::string &index_name,
                                  IndexInfo *&index_info) const {
-  // ASSERT(false, "Not Implemented yet");
   if (table_names_.find(table_name) == table_names_.end()) return DB_TABLE_NOT_EXIST;
   if (index_names_.at(table_name).find(index_name) == index_names_.at(table_name).end()) return DB_INDEX_NOT_FOUND;
+
   auto index_id = index_names_.at(table_name).at(index_name);
   index_info = indexes_.at(index_id);
+
   return DB_SUCCESS;
 }
 
@@ -227,17 +228,13 @@ dberr_t CatalogManager::GetIndex(const std::string &table_name, const std::strin
  */
 dberr_t CatalogManager::GetTableIndexes(const std::string &table_name, std::vector<IndexInfo *> &indexes) const {
   // ASSERT(false, "Not Implemented yet");
-  if (table_names_.find(table_name) == table_names_.end()) 
-  {
+  if (table_names_.find(table_name) == table_names_.end())
     return DB_TABLE_NOT_EXIST;
-  }
-  for (auto &it : indexes_) 
-  {
+
+  for (auto &it : indexes_)
     if (it.second->GetTableInfo()->GetTableName() == table_name)
-    {
       indexes.emplace_back(it.second);
-    }
-  }
+
   return DB_SUCCESS;
 }
 
@@ -245,17 +242,16 @@ dberr_t CatalogManager::GetTableIndexes(const std::string &table_name, std::vect
  * TODO: Student Implement
  */
 dberr_t CatalogManager::DropTable(const string &table_name) {
-  // ASSERT(false, "Not Implemented yet");
-  if (table_names_.find(table_name) == table_names_.end()) 
-  {
+  if (table_names_.find(table_name) == table_names_.end())
     return DB_TABLE_NOT_EXIST;
-  }
+
   auto table_id = table_names_[table_name];
   table_names_.erase(table_name);
   page_id_t page_id = catalog_meta_->table_meta_pages_[table_id];
   catalog_meta_->table_meta_pages_.erase(table_id);
   buffer_pool_manager_->DeletePage(page_id);
   tables_.erase(table_id);
+
   return DB_SUCCESS;
 }
 
@@ -263,15 +259,16 @@ dberr_t CatalogManager::DropTable(const string &table_name) {
  * TODO: Student Implement
  */
 dberr_t CatalogManager::DropIndex(const string &table_name, const string &index_name) {
-  // ASSERT(false, "Not Implemented yet");
   if (table_names_.find(table_name) == table_names_.end()) return DB_TABLE_NOT_EXIST;
   if (index_names_.at(table_name).find(index_name) == index_names_.at(table_name).end()) return DB_INDEX_NOT_FOUND;
+
   auto index_id = index_names_[table_name][index_name];
   index_names_.erase(table_name);
   page_id_t page_id = catalog_meta_->index_meta_pages_[index_id];
   catalog_meta_->index_meta_pages_.erase(index_id);
   buffer_pool_manager_->DeletePage(page_id);
   indexes_.erase(index_id);
+
   return DB_SUCCESS;
 }
 
@@ -282,10 +279,10 @@ dberr_t CatalogManager::FlushCatalogMetaPage() const {
   // ASSERT(false, "Not Implemented yet");
   auto meta_page = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID);
   catalog_meta_->SerializeTo(meta_page->GetData());
-  if (!buffer_pool_manager_->FlushPage(CATALOG_META_PAGE_ID)) 
-  {
-  return DB_FAILED;
-  }
+
+  if (!buffer_pool_manager_->FlushPage(CATALOG_META_PAGE_ID))
+    return DB_FAILED;
+
   return DB_SUCCESS;
 }
 
@@ -355,10 +352,10 @@ dberr_t CatalogManager::LoadIndex(const index_id_t index_id, const page_id_t pag
  * TODO: Student Implement
  */
 dberr_t CatalogManager::GetTable(const table_id_t table_id, TableInfo *&table_info) {
-  // ASSERT(false, "Not Implemented yet");
-  if (catalog_meta_->table_meta_pages_.find(table_id) == catalog_meta_->table_meta_pages_.end()) {
-  return DB_TABLE_NOT_EXIST;
-  }
+  if (catalog_meta_->table_meta_pages_.find(table_id) == catalog_meta_->table_meta_pages_.end())
+    return DB_TABLE_NOT_EXIST;
+
   table_info = tables_[table_id];
+
   return DB_SUCCESS;
 }
