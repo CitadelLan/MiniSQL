@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "common/dberr.h"
 #include "common/instance.h"
@@ -15,6 +16,10 @@
 
 extern "C" {
 #include "parser/parser.h"
+extern int yyparse(void);
+extern FILE *yyin;
+#include "../parser/minisql_lex.h"
+#include "../parser/parser.h"
 };
 
 /**
@@ -72,6 +77,8 @@ class ExecuteEngine {
   dberr_t ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context);
 
   dberr_t ExecuteQuit(pSyntaxNode ast, ExecuteContext *context);
+
+  void SaveDBs();
 
  private:
   std::unordered_map<std::string, DBStorageEngine *> dbs_; /** all opened databases */
