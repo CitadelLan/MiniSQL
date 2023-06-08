@@ -160,6 +160,7 @@ dberr_t CatalogManager::GetTable(const string &table_name, TableInfo *&table_inf
 
   table_id_t table_id = table_names_[table_name];
   table_info = tables_[table_id];
+
   return DB_SUCCESS;
 }
 
