@@ -16,7 +16,7 @@ uint32_t Row::SerializeTo(char *buf, Schema *schema) const {
 
   uint32_t ofs = 0;
   uint32_t vctSize = fields_.size();
-  std::vector<bool> null_indicator;
+  // std::vector<bool> null_indicator;
 
   //  /* rid_ */
   //  MACH_WRITE_TO(RowId, buf + ofs, rid_);
