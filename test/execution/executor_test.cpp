@@ -4,6 +4,7 @@
 #include "executor/plans/delete_plan.h"
 #include "executor/plans/insert_plan.h"
 #include "executor/plans/seq_scan_plan.h"
+#include "executor/plans/index_scan_plan.h"
 #include "executor/plans/update_plan.h"
 #include "executor/plans/values_plan.h"
 #include "executor_test_util.h"  // NOLINT
@@ -153,5 +154,29 @@ TEST_F(ExecutorTest, SimpleUpdateTest) {
   for (const auto &row : result_set) {
     ASSERT_TRUE(row.GetField(0)->CompareEquals(Field(kTypeInt, 500)));
     ASSERT_TRUE(row.GetField(1)->CompareEquals(Field(kTypeChar, const_cast<char *>("minisql"), 7, false)));
+  }
+}
+
+// SELECT id FROM table-1 WHERE id < 500 (id as index)
+TEST_F(ExecutorTest, SimpleIndexScanTest) {
+  // Construct query plan
+  TableInfo *table_info;
+  GetExecutorContext()->GetCatalog()->GetTable("table-1", table_info);
+  Schema *schema = table_info->GetSchema();
+  auto col_a = MakeColumnValueExpression(*schema, 0, "id");
+  auto col_b = MakeColumnValueExpression(*schema, 0, "name");
+  auto const500 = MakeConstantValueExpression(Field(kTypeInt, 500));
+  auto predicate = MakeComparisonExpression(col_a, const500, "<");
+  auto out_schema = MakeOutputSchema({{"id", col_a}, {"name", col_b}});
+  auto plan = make_shared<SeqScanPlanNode>
+      (out_schema, table_info->GetTableName(), predicate);
+  // Execute
+  std::vector<Row> result_set{};
+  GetExecutionEngine()->ExecutePlan(plan, &result_set, GetTxn(), GetExecutorContext());
+
+  // Verify
+  ASSERT_EQ(result_set.size(), 500);
+  for (const auto &row : result_set) {
+    ASSERT_TRUE(row.GetField(0)->CompareLessThan(Field(kTypeInt, 500)));
   }
 }
