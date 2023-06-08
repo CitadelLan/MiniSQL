@@ -41,6 +41,10 @@ class AbstractExecutor {
  protected:
   /** The executor context in which the executor runs */
   ExecuteContext *exec_ctx_;
+
+  TableIterator tableIt;
+
+  TableIterator end;
 };
 
 #endif  // MINISQL_ABSTRACT_EXECUTOR_H

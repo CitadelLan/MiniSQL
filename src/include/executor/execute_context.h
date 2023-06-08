@@ -34,6 +34,8 @@ class ExecuteContext {
   /** @return the buffer pool manager */
   BufferPoolManager *GetBufferPoolManager() { return bpm_; }
 
+  bool flag_quit_{false};
+
  private:
   /** The transaction context associated with this executor context */
   Transaction *transaction_;
@@ -41,7 +43,6 @@ class ExecuteContext {
   CatalogManager *catalog_;
   /** The buffer pool manager associated with this executor context */
   BufferPoolManager *bpm_;
-  bool flag_quit_{false};
 };
 
 #endif  // MINISQL_EXECUTE_CONTEXT_H

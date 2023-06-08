@@ -7,9 +7,10 @@
 
 #include <record/schema.h>
 
+#include <memory>
 #include <utility>
 #include <vector>
-#include <memory>
+#include "storage/table_iterator.h"
 
 /** PlanType represents the types of plans that we have in our system. */
 enum class PlanType {
