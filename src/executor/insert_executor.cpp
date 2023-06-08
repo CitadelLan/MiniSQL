@@ -28,12 +28,11 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
   catalog->GetTable(tableName, tableInfo);
   tableHeap = tableInfo->GetTableHeap();
 
-  /* 1. 获取values_executor中的元组，因为要求返回空元组，故新建指针 */
-  Row *values = new Row();
-  child_executor_->Next(values, nullptr);
+  /* 1. 获取values_executor中的元组 */
+  child_executor_->Next(row, nullptr);
 
   /* 2. 插入元组 */
-  if(tableHeap->InsertTuple(*values, nullptr)) {
+  if(tableHeap->InsertTuple(*row, nullptr)) {
     /* 2.1. 检查是否包含索引，如果有，更新索引 */
     Schema *schema = tableInfo->GetSchema();
     const std::vector<Column *> columns = schema->GetColumns(0);
@@ -41,14 +40,10 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
 
     for(auto it : columns)
       if(catalog->GetIndex(tableName, it->GetName(), index) == dberr_t::DB_SUCCESS)
-        index->GetIndex()->InsertEntry(*values, RowId(), nullptr);
-
-    delete values;
+        index->GetIndex()->InsertEntry(*row, RowId(), nullptr);
 
     return true;
   }
-
-  delete values;
 
   return false;
 }
