@@ -12,7 +12,7 @@ public:
   // you may define your own constructor based on your member variables
   explicit TableIterator();
 
-  explicit TableIterator(Row *row, TableHeap *source);
+  explicit TableIterator(Row row, TableHeap *source);
 
   TableIterator(const TableIterator &other);
 
@@ -33,7 +33,7 @@ public:
   TableIterator operator++(int);
 
 private:
-  Row *row;
+  Row row;
   TableHeap *source;
 };
 

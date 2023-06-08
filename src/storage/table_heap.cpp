@@ -158,8 +158,10 @@ TableIterator TableHeap::Begin(Transaction *txn) {
   }
 
   if(isFound){
-    Row *retRow = new Row(headRID);
-    GetTuple(retRow, nullptr);
+    Row *tmp = new Row(headRID);
+    GetTuple(tmp, nullptr);
+    Row retRow(*tmp);
+    delete tmp;
     return TableIterator(retRow, this);
   }
 
@@ -170,5 +172,5 @@ TableIterator TableHeap::Begin(Transaction *txn) {
  * TODO: Student Implement
  */
 TableIterator TableHeap::End() {
-  return TableIterator(nullptr, this);
+  return TableIterator(Row(), this);
 }
