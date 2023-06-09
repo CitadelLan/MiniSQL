@@ -51,6 +51,19 @@ TEST_F(ExecutorTest, SimpleDeleteTest) {
       GetExecutorContext()->GetCatalog()->CreateIndex("table-1", "index-1", index_keys, GetTxn(), index_info, "bptree");
   ASSERT_EQ(DB_SUCCESS, r3);
 
+  /* 插入索引条目 */
+  TableInfo *tableInfo;
+  GetExecutorContext()->GetCatalog()->GetTable("table-1", tableInfo);
+  TableIterator start = tableInfo->GetTableHeap()->Begin(nullptr),
+                end = tableInfo->GetTableHeap()->End();
+  for(; start != end; start++)
+  {
+    Row row;
+    row = start.operator*();
+    row.GetKeyFromRow(tableInfo->GetSchema(), index_info->GetIndexKeySchema(), row);
+    index_info->GetIndex()->InsertEntry(row, RowId(), nullptr);
+  }
+
   std::vector<Row> result_set;
   GetExecutionEngine()->ExecutePlan(scan_plan, &result_set, GetTxn(), GetExecutorContext());
 
