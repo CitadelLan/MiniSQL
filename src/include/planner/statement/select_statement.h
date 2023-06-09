@@ -33,7 +33,7 @@ class SelectStatement : public AbstractStatement {
         return;
       }
       case kNodeConditions: {
-        where_ = MakePredicate(ast->child_, table_name_, &column_in_condition_);
+        where_ = MakePredicate(ast->child_, table_name_, &column_in_condition_, &has_or);
         break;
       }
       default:
@@ -47,7 +47,7 @@ class SelectStatement : public AbstractStatement {
     context_->GetCatalog()->GetTable(table_name_, info);
     auto schema = info->GetSchema();
     if (!ast) {
-      auto columns = schema->GetColumns(0);
+      auto columns = schema->GetColumns();
       for (auto column : columns) {
         auto expr = std::make_shared<ColumnValueExpression>(0, column->GetTableInd(), column->GetType());
         column_list_.emplace_back(make_pair(column->GetName(), expr));
