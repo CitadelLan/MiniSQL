@@ -213,7 +213,8 @@ TEST_F(ExecutorTest, SimpleIndexTest) {
     Row row;
     row = start.operator*();
     row.GetKeyFromRow(tableInfo->GetSchema(), index_info->GetIndexKeySchema(), row);
-    index_info->GetIndex()->InsertEntry(row, RowId(), nullptr);
+    row.SetRowId(start.operator*().GetRowId());
+    index_info->GetIndex()->InsertEntry(row, row.GetRowId(), nullptr);
   }
 
   /* 新增：index scan */
