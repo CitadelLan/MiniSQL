@@ -51,9 +51,9 @@ bool TableHeap::MarkDelete(const RowId &rid, Transaction *txn) {
     return false;
   }
   // Otherwise, mark the tuple as deleted.
-  page->WLatch();
+  // page->WLatch();
   page->MarkDelete(rid, txn, lock_manager_, log_manager_);
-  page->WUnlatch();
+  // page->WUnlatch();
   buffer_pool_manager_->UnpinPage(page->GetTablePageId(), true);
   return true;
 }

@@ -216,7 +216,14 @@ dberr_t CatalogManager::CreateIndex(const std::string &table_name, const string 
 dberr_t CatalogManager::GetIndex(const std::string &table_name, const std::string &index_name,
                                  IndexInfo *&index_info) const {
   if (table_names_.find(table_name) == table_names_.end()) return DB_TABLE_NOT_EXIST;
-  if (index_names_.at(table_name).find(index_name) == index_names_.at(table_name).end()) return DB_INDEX_NOT_FOUND;
+  if (index_names_.find(table_name) != index_names_.end())
+  {
+    if(index_names_.at(table_name).find(index_name) == index_names_.at(table_name).end())
+        return DB_INDEX_NOT_FOUND;
+  }
+  else
+    return DB_INDEX_NOT_FOUND;
+
 
   auto index_id = index_names_.at(table_name).at(index_name);
   index_info = indexes_.at(index_id);

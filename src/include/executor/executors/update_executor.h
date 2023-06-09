@@ -49,7 +49,7 @@ class UpdateExecutor : public AbstractExecutor {
    * based on the `UpdateInfo` provided in the plan.
    * @param src_row The row to be updated
    */
-  Row GenerateUpdatedTuple(const Row &src_row);
+  Row GenerateUpdatedTuple(Row src_row);
 
   /** The update plan node to be executed */
   const UpdatePlanNode *plan_;
