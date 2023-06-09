@@ -40,7 +40,7 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
 
     for(auto it : columns)
       if(catalog->GetIndex(tableName, it->GetName(), index) == dberr_t::DB_SUCCESS)
-        index->GetIndex()->InsertEntry(*row, RowId(), nullptr);
+        index->GetIndex()->InsertEntry(*row, *rid, nullptr);
 
     return true;
   }
