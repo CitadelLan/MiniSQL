@@ -30,11 +30,21 @@ void SeqScanExecutor::Init() {
 }
 
 bool SeqScanExecutor::Next(Row *row, RowId *rid) {
-  /* 0.获取sequential scan中的筛选条件对应的expression tree */
+  /* 0. 获取sequential scan中的筛选条件对应的expression tree和
+   *    输入与输出输出Schema */
   AbstractExpressionRef filter = plan_->GetPredicate();
+  const std::string tableName = plan_->GetTableName();
+  // --------------------------------------------------------------
+  CatalogManager *catalog = GetExecutorContext()->GetCatalog();
+  TableInfo *targetInfo;
+  catalog->GetTable(tableName, targetInfo);
+  // --------------------------------------------------------------
+  const Schema *schemaOut = GetOutputSchema(),
+               *schemaIn = targetInfo->GetSchema();
   // 当有where的时候，predicate为非空指针，且应该一定是comparison或logic类型expression
   // 该expression返回类型一定为Field(kTypeInt, CmpBool::kTrue/kFalse)
   // 当没有where时，应该是空指针
+
   Field mark(kTypeInt, CmpBool::kTrue);
 
   /* !!!1. 对expression tree做遍历，找到查询语句的筛选条件
@@ -50,6 +60,7 @@ bool SeqScanExecutor::Next(Row *row, RowId *rid) {
       {
         *row = *tmp;
         *rid = tmp->GetRowId();
+        row->GetKeyFromRow(schemaIn, schemaOut, *row);
         delete tmp;
         tableIt++;
         return true;
@@ -62,6 +73,7 @@ bool SeqScanExecutor::Next(Row *row, RowId *rid) {
     {
       *row = *tmp;
       *rid = tmp->GetRowId();
+      row->GetKeyFromRow(schemaIn, schemaOut, *row);
       delete tmp;
       tableIt++;
       return true;

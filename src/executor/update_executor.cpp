@@ -11,8 +11,9 @@ UpdateExecutor::UpdateExecutor(ExecuteContext *exec_ctx, const UpdatePlanNode *p
 /* 对一个UpdateExecutor，有：
  ** ExecuteContext: CatalogManager + BufferPoolManager
  ** UpdatePlanNode: (output_schema) + table_name +
- *                  children(单个SeqScanPlanNode->child_executor) +
+ *                  children(单个SeqScanPlanNode) +
  *                  update_attrs (uint32/field下标 -> AbstractExpression/新field)
+ *  child_executor: children->SeqScanExecutor
  * */
 
 void UpdateExecutor::Init() {
