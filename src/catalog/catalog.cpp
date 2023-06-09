@@ -224,7 +224,6 @@ dberr_t CatalogManager::GetIndex(const std::string &table_name, const std::strin
   else
     return DB_INDEX_NOT_FOUND;
 
-
   auto index_id = index_names_.at(table_name).at(index_name);
   index_info = indexes_.at(index_id);
 
