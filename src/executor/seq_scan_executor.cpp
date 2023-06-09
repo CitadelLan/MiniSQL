@@ -61,6 +61,7 @@ bool SeqScanExecutor::Next(Row *row, RowId *rid) {
         *row = *tmp;
         *rid = tmp->GetRowId();
         row->GetKeyFromRow(schemaIn, schemaOut, *row);
+        // 输出需要按照OutputSchema格式
         delete tmp;
         tableIt++;
         return true;
@@ -74,6 +75,7 @@ bool SeqScanExecutor::Next(Row *row, RowId *rid) {
       *row = *tmp;
       *rid = tmp->GetRowId();
       row->GetKeyFromRow(schemaIn, schemaOut, *row);
+      // 输出需要按照OutputSchema格式
       delete tmp;
       tableIt++;
       return true;
