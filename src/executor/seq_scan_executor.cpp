@@ -50,36 +50,26 @@ bool SeqScanExecutor::Next(Row *row, RowId *rid) {
   /* !!!1. 对expression tree做遍历，找到查询语句的筛选条件
    * 以目前对框架的理解，expression tree会从根节点递归向下进行条件筛选
    * 当条件结果为CmpBool::kTrue时，说明该row符合条件 */
-  while(tableIt != end)
+  if(tableIt != end)
   {
     Row *tmp = new Row(tableIt.operator*());
     /* 筛选条件存在 */
-    if(filter)
-    {
-      if(filter->Evaluate(tmp).CompareEquals(mark))
-      {
-        *row = *tmp;
-        *rid = tmp->GetRowId();
-        row->GetKeyFromRow(schemaIn, schemaOut, *row);
-        // 输出需要按照OutputSchema格式
+    if(filter) {
+      while (!filter->Evaluate(tmp).CompareEquals(mark)) {
         delete tmp;
         tableIt++;
-        return true;
+        if(tableIt == end)  return false;
+        tmp = new Row(tableIt.operator*());
       }
-      delete tmp;
-      tableIt++;
     }
     /* 筛选条件不存在 */
-    else
-    {
-      *row = *tmp;
-      *rid = tmp->GetRowId();
-      row->GetKeyFromRow(schemaIn, schemaOut, *row);
-      // 输出需要按照OutputSchema格式
-      delete tmp;
-      tableIt++;
-      return true;
-    }
+    *row = *tmp;
+    *rid = tmp->GetRowId();
+    row->GetKeyFromRow(schemaIn, schemaOut, *row);
+    // 输出需要按照OutputSchema格式
+    delete tmp;
+    tableIt++;
+    return true;
   }
 
   return false;

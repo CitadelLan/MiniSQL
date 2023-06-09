@@ -190,12 +190,16 @@ dberr_t CatalogManager::CreateIndex(const std::string &table_name, const string 
   auto schema = tables_[table_names_[table_name]]->GetSchema();
   auto table_info = tables_[table_names_[table_name]];
   std::vector<uint32_t> key_map;
-  for (auto &it : index_keys) 
+
+  /* 1. 得到并存储columnName与其在schema中下标的对应关系 */
+  for (auto &it : index_keys)
   {
     uint32_t col_idx;
     if (schema->GetColumnIndex(it, col_idx) == DB_COLUMN_NAME_NOT_EXIST) return DB_COLUMN_NAME_NOT_EXIST;
     key_map.push_back(col_idx);
   }
+
+  /* 3. 初始化index_info并建立映射关系 */
   auto index_id = catalog_meta_->GetNextIndexId();
   index_names_[table_name][index_name] = index_id;
   page_id_t page_id;
@@ -207,6 +211,7 @@ dberr_t CatalogManager::CreateIndex(const std::string &table_name, const string 
   index_info = IndexInfo::Create();
   index_info->Init(index_meta, table_info, buffer_pool_manager_);
   indexes_[index_id] = index_info;
+
   return DB_SUCCESS;
 }
 

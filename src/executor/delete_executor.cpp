@@ -2,6 +2,7 @@
 // Created by njz on 2023/1/29.
 //
 
+#include <algorithm>
 #include "executor/executors/delete_executor.h"
 
 DeleteExecutor::DeleteExecutor(ExecuteContext *exec_ctx, const DeletePlanNode *plan,
@@ -39,11 +40,25 @@ bool DeleteExecutor::Next(Row *row, RowId *rid) {
       /* 2.2. 检查是否包含索引，如果有，删除索引 */
       Schema *schema = tableInfo->GetSchema();
       const std::vector<Column *> columns = schema->GetColumns(0);
-      IndexInfo *index = nullptr;
+      std::vector<IndexInfo *> tmp;
+      catalog->GetTableIndexes(tableName, tmp);
+      IndexInfo *index;
 
-      for(auto it : columns)
-        if (catalog->GetIndex(tableName, it->GetName(), index) == dberr_t::DB_SUCCESS)
-          index->GetIndex()->RemoveEntry(*row, *rid, nullptr);
+      for(auto it : tmp)
+      {
+        if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
+          for (auto it2 : columns)
+          {
+            uint32_t col;
+            schema->GetColumnIndex(it2->GetName(), col);
+            std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
+            if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
+              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
+              index->GetIndex()->RemoveEntry(*row, *rid, nullptr);
+            }
+          }
+        }
+      }
 
       tableHeap->ApplyDelete(*rid, nullptr);
 

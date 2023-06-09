@@ -85,6 +85,13 @@ TEST_F(ExecutorTest, SimpleRawInsertTest) {
   std::vector<std::vector<AbstractExpressionRef>> raw_values{{const1, const2, const3}};
   auto value_plan = std::make_shared<ValuesPlanNode>(nullptr, raw_values);
 
+  // Create the index
+  IndexInfo *index_info = nullptr;
+  std::vector<std::string> index_keys{"id"};
+  auto r3 =
+      GetExecutorContext()->GetCatalog()->CreateIndex("table-1", "index-1", index_keys, GetTxn(), index_info, "bptree");
+  ASSERT_EQ(DB_SUCCESS, r3);
+
   // Create insert plan node
   TableInfo *table_info;
   GetExecutorContext()->GetCatalog()->GetTable("table-1", table_info);
@@ -111,6 +118,14 @@ TEST_F(ExecutorTest, SimpleRawInsertTest) {
   ASSERT_TRUE(result_set[0].GetField(0)->CompareEquals(Field(kTypeInt, 1001)));
   ASSERT_TRUE(result_set[0].GetField(1)->CompareEquals(Field(kTypeChar, const_cast<char *>("aaa"), 3, false)));
   ASSERT_TRUE(result_set[0].GetField(2)->CompareEquals(Field(kTypeFloat, static_cast<float>(2.33))));
+
+  /* 新增：确认被加入索引中 */
+  std::vector<Field> tmp;
+  tmp.push_back(*result_set[0].GetField(0));
+  Row index_key(tmp);
+  std::vector<RowId> rids{};
+  index_info->GetIndex()->ScanKey(index_key, rids, GetTxn());
+  ASSERT_FALSE(rids.empty());
 }
 
 // UPDATE table-1 SET name = "minisql" where id = 500;
@@ -157,26 +172,48 @@ TEST_F(ExecutorTest, SimpleUpdateTest) {
   }
 }
 
-// SELECT id FROM table-1 WHERE id < 500 (id as index)
-TEST_F(ExecutorTest, SimpleIndexScanTest) {
+// DELETE FROM table-1 WHERE id == 50;
+TEST_F(ExecutorTest, SimpleIndexTest) {
   // Construct query plan
   TableInfo *table_info;
   GetExecutorContext()->GetCatalog()->GetTable("table-1", table_info);
-  Schema *schema = table_info->GetSchema();
-  auto col_a = MakeColumnValueExpression(*schema, 0, "id");
-  auto col_b = MakeColumnValueExpression(*schema, 0, "name");
-  auto const500 = MakeConstantValueExpression(Field(kTypeInt, 500));
-  auto predicate = MakeComparisonExpression(col_a, const500, "<");
-  auto out_schema = MakeOutputSchema({{"id", col_a}, {"name", col_b}});
-  auto plan = make_shared<SeqScanPlanNode>
-      (out_schema, table_info->GetTableName(), predicate);
-  // Execute
-  std::vector<Row> result_set{};
-  GetExecutionEngine()->ExecutePlan(plan, &result_set, GetTxn(), GetExecutorContext());
+  const Schema *schema = table_info->GetSchema();
+  auto col_id = MakeColumnValueExpression(*schema, 0, "id");
+  auto const50 = MakeConstantValueExpression(Field(kTypeInt, 50));
+  auto predicate = MakeComparisonExpression(col_id, const50, "=");
+  auto out_schema = MakeOutputSchema({{"id", col_id}});
+
+  // Create the index
+  IndexInfo *index_info = nullptr;
+  std::vector<std::string> index_keys{"id"};
+  auto r3 =
+      GetExecutorContext()->GetCatalog()->CreateIndex("table-1", "index-1", index_keys, GetTxn(), index_info, "bptree");
+  ASSERT_EQ(DB_SUCCESS, r3);
+
+  /* 插入索引条目 */
+  TableInfo *tableInfo;
+  GetExecutorContext()->GetCatalog()->GetTable("table-1", tableInfo);
+  TableIterator start = tableInfo->GetTableHeap()->Begin(nullptr),
+                end = tableInfo->GetTableHeap()->End();
+  for(; start != end; start++)
+  {
+    Row row;
+    row = start.operator*();
+    row.GetKeyFromRow(tableInfo->GetSchema(), index_info->GetIndexKeySchema(), row);
+    index_info->GetIndex()->InsertEntry(row, RowId(), nullptr);
+  }
+
+  /* 新增：index scan */
+  std::vector<IndexInfo *> indexes;
+  indexes.push_back(index_info);
+  auto scan_plan = std::make_shared<IndexScanPlanNode>
+      (out_schema, table_info->GetTableName(), indexes, true, predicate);
+  std::vector<Row> result_set;
+  GetExecutionEngine()->ExecutePlan(scan_plan, &result_set, GetTxn(), GetExecutorContext());
 
   // Verify
-  ASSERT_EQ(result_set.size(), 500);
+  ASSERT_EQ(result_set.size(), 1);
   for (const auto &row : result_set) {
-    ASSERT_TRUE(row.GetField(0)->CompareLessThan(Field(kTypeInt, 500)));
+    ASSERT_TRUE(row.GetField(0)->CompareEquals(Field(kTypeInt, 50)));
   }
 }

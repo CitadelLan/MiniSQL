@@ -2,6 +2,7 @@
 // Created by njz on 2023/1/30.
 //
 
+#include <algorithm>
 #include "executor/executors/update_executor.h"
 
 UpdateExecutor::UpdateExecutor(ExecuteContext *exec_ctx, const UpdatePlanNode *plan,
@@ -36,16 +37,28 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
     /* 2. 更新 */
     /* 2.1. 标记待删除元组 */
     if(tableHeap->MarkDelete(*rid, nullptr)) {
-      /* 2.2. 检查是否包含索引，如果有，删除索引 */
+      /* 2.2. 检查是否包含索引，如果有，更新索引 */
       Schema *schema = tableInfo->GetSchema();
       const std::vector<Column *> columns = schema->GetColumns(0);
-      IndexInfo *index = nullptr;
+      std::vector<IndexInfo *> tmp;
+      catalog->GetTableIndexes(tableName, tmp);
+      IndexInfo *index;
       Row newTuple = GenerateUpdatedTuple(*row); // 获取更新的新元组
 
-      for(auto it : columns) {
-        if (catalog->GetIndex(tableName, it->GetName(), index) == dberr_t::DB_SUCCESS) {
-          index->GetIndex()->RemoveEntry(*row, *rid, nullptr);
-          index->GetIndex()->InsertEntry(newTuple, *rid, nullptr);
+      for(auto it : tmp)
+      {
+        if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
+          for (auto it2 : columns)
+          {
+            uint32_t col;
+            schema->GetColumnIndex(it2->GetName(), col);
+            std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
+            if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
+              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
+              index->GetIndex()->RemoveEntry(*row, *rid, nullptr);
+              index->GetIndex()->InsertEntry(newTuple, *rid, nullptr);
+            }
+          }
         }
       }
 
