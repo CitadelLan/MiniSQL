@@ -49,7 +49,7 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
             std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
             if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
               row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
-              index->GetIndex()->InsertEntry(*row, *rid, nullptr);
+              index->GetIndex()->InsertEntry(*row, row->GetRowId(), nullptr);
             }
           }
         }
