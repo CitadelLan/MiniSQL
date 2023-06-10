@@ -16,8 +16,6 @@
 #include "glog/logging.h"
 #include "planner/planner.h"
 #include "utils/utils.h"
-#include "catalog/table.h"
-#include "executor/execute_context.h"
 
 ExecuteEngine::ExecuteEngine() {
   char path[] = "./databases";
@@ -26,8 +24,9 @@ ExecuteEngine::ExecuteEngine() {
     mkdir("./databases", 0777);
     dir = opendir(path);
   }
-  /** After you finish the code for the CatalogManager section,
-   *  you can uncomment the commented code.
+  /** When you have completed all the code for
+   *  the test, run it using main.cpp and uncomment
+   *  this part of the code.
   struct dirent *stdir;
   while((stdir = readdir(dir)) != nullptr) {
     if( strcmp( stdir->d_name , "." ) == 0 ||
@@ -35,8 +34,8 @@ ExecuteEngine::ExecuteEngine() {
         stdir->d_name[0] == '.')
       continue;
     dbs_[stdir->d_name] = new DBStorageEngine(stdir->d_name, false);
-  }
-   **/
+  }**/
+  // end of comment
   closedir(dir);
 }
 
@@ -237,6 +236,7 @@ void ExecuteEngine::ExecuteInformation(dberr_t result) {
       break;
   }
 }
+
 /**
  * TODO: Student Implement
  */
@@ -246,41 +246,47 @@ dberr_t ExecuteEngine::ExecuteCreateDatabase(pSyntaxNode ast, ExecuteContext *co
 #endif
   if(ast == nullptr || ast->child_ == nullptr)
     return DB_FAILED;
+
+  /* 1. database存在，返回报错 */
   std::string db_name(ast->child_->val_);
-  if(dbs_[db_name] != nullptr)
+  if(dbs_.find(db_name) != dbs_.end())
   {
-    std::cout << "database " << db_name << " exists." << endl;
+    std::cout << "Error: Database " << db_name << " exists." << endl;
     return DB_FAILED;
   }
-  DBStorageEngine* new_database = new DBStorageEngine(db_name.data(), true);
-  if(new_database == nullptr)
-  {
-    std::cout << "create database " << db_name << " fails." << endl;
-    return DB_FAILED;
-  }
+
+  /* 2. database不存在，新建其 */
+  auto* new_database = new DBStorageEngine(db_name, true);
   dbs_[db_name] = new_database;
+  std::cout << "Database " << db_name << " created." << endl;
   // this->SaveDBs();
+
   return DB_SUCCESS;
 }
 
-/**
- * TODO: Student Implement
- */
 dberr_t ExecuteEngine::ExecuteDropDatabase(pSyntaxNode ast, ExecuteContext *context) {
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteDropDatabase" << std::endl;
 #endif
- if(ast == nullptr || ast->child_ == nullptr)
+  if(ast == nullptr || ast->child_ == nullptr)
     return DB_FAILED;
+
+  /* 1. database不存在，返回报错 */
   std::string del_db_name(ast->child_->val_);
-  if(dbs_[del_db_name] == nullptr)
+  if(dbs_.find(del_db_name) == dbs_.end()) {
+    std::cout << "Error: Database " << del_db_name << " not found." << endl;
     return DB_FAILED;
+  }
+
+  /* 2. database存在，删除该数据库（如果当前数据库恰好为将被删除的库，转移位置） */
   if(current_db_ == del_db_name)
     current_db_ = "";
   DBStorageEngine* target_db = dbs_[del_db_name];
   target_db->~DBStorageEngine();
   dbs_.erase(del_db_name);
+  std::cout << "Database " << del_db_name << " deleted." << endl;
   // this->SaveDBs();
+
   return DB_SUCCESS;
 }
 
@@ -291,11 +297,11 @@ dberr_t ExecuteEngine::ExecuteShowDatabases(pSyntaxNode ast, ExecuteContext *con
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteShowDatabases" << std::endl;
 #endif
-  for(std::pair<std::string, DBStorageEngine*> kv : dbs_)
-  {
-    std::cout << kv.first << std::endl;
-  }
-  std::cout << "Database(s) of number: " << dbs_.size() << endl;
+  std::cout << "Number of database(s): " << dbs_.size() << endl;
+
+  for(std::pair<std::string, DBStorageEngine*> it : dbs_)
+    std::cout << it.first << std::endl;
+
   return DB_SUCCESS;
 }
 
@@ -308,13 +314,19 @@ dberr_t ExecuteEngine::ExecuteUseDatabase(pSyntaxNode ast, ExecuteContext *conte
 #endif
   if(ast == nullptr || ast->child_ == nullptr)
     return DB_FAILED;
+
+  /* 找不到database */
   std::string db_name(ast->child_->val_);
-  if(dbs_[db_name] == nullptr)
+  if(dbs_.find(db_name) == dbs_.end())
   {
-    std::cout << "no database " << db_name << endl;
-    return DB_FAILED; 
+    std::cout << "No database called " << db_name << endl;
+    return DB_FAILED;
   }
+
+  /* 找到了database */
   current_db_ = db_name;
+  std::cout << "Database " << db_name << " in use now." << endl;
+
   return DB_SUCCESS;
 }
 
@@ -326,20 +338,195 @@ dberr_t ExecuteEngine::ExecuteShowTables(pSyntaxNode ast, ExecuteContext *contex
   LOG(INFO) << "ExecuteShowTables" << std::endl;
 #endif
   DBStorageEngine* current_db_engine = dbs_[current_db_];
+
+  /* 1. 判断当前是否有已选中的dbEngine */
   if(current_db_engine == nullptr)
   {
-    std::cout << "no database selected." << endl;
+    std::cout << "No database selected." << endl;
     return DB_FAILED;
   }
+
+  /* 2. 获取该dbEngine中所有的table */
+  std::vector<TableInfo *> tableInfos;
+  current_db_engine->catalog_mgr_->GetTables(tableInfos);
+  for(auto it : tableInfos)
+    cout << it->GetTableName() << endl;
+  cout << "Number of table(s): " << tableInfos.size() << endl;
+
+  return DB_SUCCESS;
 }
 
 /**
- * TODO: Student Implement(need fixing)
+ * TODO: Student Implement
  */
 dberr_t ExecuteEngine::ExecuteCreateTable(pSyntaxNode ast, ExecuteContext *context) {
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteCreateTable" << std::endl;
 #endif
+  DBStorageEngine* current_db_engine = dbs_[current_db_];
+
+  if(current_db_engine == nullptr) {
+    cout << "Error on fetching database: " << current_db_ << " ." << endl;
+    return DB_FAILED;
+  }
+
+  /* 1. 查找表在该database中是否存在 */
+  string new_table_name(ast->child_->val_);
+  TableInfo* new_table_info;
+  dberr_t find_table = current_db_engine->catalog_mgr_
+                           ->GetTable(new_table_name, new_table_info);
+  if(find_table == DB_SUCCESS)
+  {
+    std::cout << "Table exists in current database." << endl;
+    return DB_FAILED;
+  }
+
+  TableInfo* tmp_table_info;                      // 存放新表信息
+  /* 语法树 */
+  pSyntaxNode currList = ast->child_->next_;
+  pSyntaxNode currNode = currList->child_;
+  /* Columns */
+  vector<Column*> tmp_column_vec;                 // 新表栏目（schema）
+  vector<string> column_names;                    // 新表个栏名字——便于后续调用
+  /* Columns属性 */
+  unordered_map<string, bool> is_unique_key;
+  unordered_map<string, bool> is_primary_key;
+  unordered_map<string, string> type_of_column;
+  unordered_map<string, int> char_size;
+  vector<string> uni_keys;
+  vector<string> pri_keys;
+
+  /* 2. 解析Column信息 */
+  while(currNode != nullptr && currNode->type_ == kNodeColumnDefinition)
+  {
+    /* 2.0. 默认值设定 */
+    string currTypename(currNode->child_->next_->val_);
+    string currColumnName(currNode->child_->val_);
+    column_names.push_back(currColumnName);
+    type_of_column[currColumnName] = currTypename;
+    is_unique_key[currColumnName] = false;
+    is_primary_key[currColumnName] = false;
+
+    /* 2.1. 判断是否是unique属性 */
+    bool isUnique = false;
+    if(currNode->val_ != nullptr)
+      isUnique = true;
+    if(isUnique)
+    {
+      is_unique_key[currColumnName] = true;
+      uni_keys.push_back(currColumnName);
+    }
+    else
+      is_unique_key[currColumnName] = false;
+
+    /* 2.2. 对于char属性特判 */
+    if(currTypename == "char")
+    {
+      pSyntaxNode charNode = currNode->child_->next_->child_;
+      string str_char_size (charNode->val_);
+      char_size[currColumnName] = atoi(str_char_size.data());
+
+      if(char_size[currColumnName] <= 0)
+      {
+        std::cout << "Error: char " << currColumnName << " size <= 0 !" << endl;
+        return DB_FAILED;
+      }
+    }
+
+    currNode = currNode->next_;
+  }
+
+  /* 3. 主键定义
+   * currNode->type_ != kNodeColumnDefinition */
+  if(currNode != nullptr)
+  {
+    pSyntaxNode primary_keys_node = currNode->child_;
+    while(primary_keys_node)
+    {
+      string primary_key_name(primary_keys_node->val_);
+      is_primary_key[primary_key_name] = true;
+      pri_keys.push_back(primary_key_name);
+      // uni_keys.push_back(primary_key_name);
+      primary_keys_node = primary_keys_node->next_;
+    }
+
+  }
+
+  /* 4. 对收集到的columns做实例化 */
+  int column_index_counter = 0;
+  for(const string& column_name_stp: column_names)
+  {
+    Column* new_column;
+
+    /* int类型 */
+    if(type_of_column[column_name_stp] == "int")
+    {
+      if(is_unique_key[column_name_stp] || is_primary_key[column_name_stp])
+        new_column = new Column(column_name_stp, TypeId::kTypeInt, column_index_counter,
+                                false, true);
+      else
+        new_column = new Column(column_name_stp, TypeId::kTypeInt, column_index_counter,
+                                false, false);
+    }
+
+    /* float类型 */
+    else if(type_of_column[column_name_stp] == "float")
+    {
+      if(is_unique_key[column_name_stp] || is_primary_key[column_name_stp])
+        new_column = new Column(column_name_stp, TypeId::kTypeFloat, column_index_counter,
+                                false, true);
+      else
+        new_column = new Column(column_name_stp, TypeId::kTypeFloat, column_index_counter,
+                                false, false);
+    }
+
+    /* char类型 */
+    else if(type_of_column[column_name_stp] == "char") {
+      if (is_unique_key[column_name_stp] || is_primary_key[column_name_stp])
+        new_column = new Column(column_name_stp, TypeId::kTypeChar, char_size[column_name_stp], column_index_counter,
+                                false, true);
+      else
+        new_column = new Column(column_name_stp, TypeId::kTypeChar, char_size[column_name_stp], column_index_counter,
+                                false, false);
+    }
+    else
+    {
+      std::cout << "Error: Unknown typename" << column_name_stp << endl;
+      return DB_FAILED;
+    }
+    column_index_counter++;
+    tmp_column_vec.push_back(new_column);
+  }
+
+  /* 5. 将实例化的columns信息构造为TableInfo类型对象
+   *    ? 需要进一步区分主键与unique键 */
+  auto* new_schema = new Schema(tmp_column_vec);
+  dberr_t if_create_success;
+  if_create_success = current_db_engine->catalog_mgr_->CreateTable(new_table_name,
+                                                                   new_schema, nullptr, tmp_table_info);
+  if(if_create_success != DB_SUCCESS)
+    return if_create_success;
+  CatalogManager* current_CMgr = dbs_[current_db_]->catalog_mgr_;
+  for(const string& column_name_stp: column_names)
+  {
+    /* 这里不清楚到底是用unique还是primary */
+    if(is_primary_key[column_name_stp])
+    {
+      string stp_index_name = column_name_stp + "_index";
+      vector<string> index_columns_stp = {column_name_stp};
+      IndexInfo* stp_index_info;
+      dberr_t if_create_index_success
+          = current_CMgr->CreateIndex(new_table_name, stp_index_name, index_columns_stp,
+                                      nullptr, stp_index_info, "bptree");
+      if(if_create_index_success != DB_SUCCESS)
+        return if_create_index_success;
+    }
+  }
+
+  tmp_table_info->GetMeta()->pri_keys = pri_keys;
+  tmp_table_info->GetMeta()->uni_keys = uni_keys;
+
+  return DB_SUCCESS;
 }
 
 /**
@@ -349,8 +536,9 @@ dberr_t ExecuteEngine::ExecuteDropTable(pSyntaxNode ast, ExecuteContext *context
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteDropTable" << std::endl;
 #endif
-if(ast == nullptr || ast->child_ == nullptr)
+  if(ast == nullptr || ast->child_ == nullptr)
     return DB_FAILED;
+
   string drop_table_name(ast->child_->val_);
 
   return dbs_[current_db_]->catalog_mgr_->DropTable(drop_table_name);
@@ -363,24 +551,28 @@ dberr_t ExecuteEngine::ExecuteShowIndexes(pSyntaxNode ast, ExecuteContext *conte
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteShowIndexes" << std::endl;
 #endif
-  vector<TableInfo*> vec_tableinfo;
-  dberr_t if_gettable_success = dbs_[current_db_]->catalog_mgr_->GetTables(vec_tableinfo);
+  /* 1. 查找表是否存在 */
+  vector<TableInfo*> vec_tableInfo;
+  dberr_t if_gettable_success = dbs_[current_db_]->catalog_mgr_->GetTables(vec_tableInfo);
   if(if_gettable_success != DB_SUCCESS)
     return if_gettable_success;
+
+  /* 2. 查找index */
   CatalogManager* current_CMgr = dbs_[current_db_]->catalog_mgr_;
-  for(TableInfo* tmp_tableinfo: vec_tableinfo)
+  for(TableInfo* tmp_tableInfo: vec_tableInfo)
   {
-    vector<IndexInfo*> vec_tmp_indexinfo;
-    string table_name = tmp_tableinfo->GetTableName();
-    dberr_t if_getindex_success = current_CMgr->GetTableIndexes(table_name, vec_tmp_indexinfo);
-    if(if_getindex_success != DB_SUCCESS)
-      return if_getindex_success;
-    for(IndexInfo* tmp_indexinfo: vec_tmp_indexinfo)
+    vector<IndexInfo*> vec_tmp_indexInfo;
+    string table_name = tmp_tableInfo->GetTableName();
+    dberr_t if_getIndex_success = current_CMgr->GetTableIndexes(table_name, vec_tmp_indexInfo);
+    if(if_getIndex_success != DB_SUCCESS)
+      return if_getIndex_success;
+    for(auto it : vec_tmp_indexInfo)
     {
-      string index_name = tmp_indexinfo->GetIndexName();
+      string index_name = it->GetIndexName();
       std::cout << index_name << endl;
     }
   }
+
   return DB_SUCCESS;
 }
 
@@ -391,6 +583,65 @@ dberr_t ExecuteEngine::ExecuteCreateIndex(pSyntaxNode ast, ExecuteContext *conte
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteCreateIndex" << std::endl;
 #endif
+  if(ast == nullptr || current_db_ == "")
+    return DB_FAILED;
+
+  /* 0. 查找表 */
+  CatalogManager* current_CMgr = dbs_[current_db_]->catalog_mgr_;
+  string table_name(ast->child_->next_->val_);
+  string index_name(ast->child_->val_);
+  TableInfo* target_table;
+  dberr_t if_gettable_success = current_CMgr->GetTable(table_name, target_table);
+  if(if_gettable_success != DB_SUCCESS)
+    return if_gettable_success;
+
+  /* 1. 查找需要建立索引的项目 */
+  vector<string> vec_index_colum_lists;
+  pSyntaxNode pSnode_colum_list = ast->child_->next_->next_->child_;
+  while(pSnode_colum_list)
+  {
+    vec_index_colum_lists.emplace_back(pSnode_colum_list->val_);
+    pSnode_colum_list = pSnode_colum_list->next_;
+  }
+
+  /* 2. 寻找索引是否存在 */
+  Schema* target_schema = target_table->GetSchema();
+  for(const string& tmp_colum_name: vec_index_colum_lists)
+  {
+    bool if_could = false;
+    vector<string> uni_colum_list = target_table->GetMeta()->uni_keys;
+
+    /* 2.1. 检验该columnName是否可以建立索引项 */
+    for(const string& name: uni_colum_list)
+    {
+      if(name == tmp_colum_name)
+      {
+        if_could = true;
+        break;
+      }
+    }
+    if(!if_could)
+    {
+      std::cout << "Error: Can't build index on column(s) not unique." << endl;
+      return DB_FAILED;
+    }
+
+    /* 2.2. 获取索引项下标 */
+    uint32_t tmp_index;
+    dberr_t if_getColumn_success = target_schema->GetColumnIndex(tmp_colum_name, tmp_index);
+    if(if_getColumn_success != DB_SUCCESS)
+      return if_getColumn_success;
+  }
+
+  /* 3. 建立索引 */
+  IndexInfo* new_indexInfo;
+  dberr_t if_createIndex_success = current_CMgr->CreateIndex
+                                   (table_name, index_name, vec_index_colum_lists, nullptr,
+                                    new_indexInfo, "bptree");
+  if(if_createIndex_success != DB_SUCCESS)
+    return if_createIndex_success;
+
+  return DB_SUCCESS;
 }
 
 /**
@@ -400,13 +651,17 @@ dberr_t ExecuteEngine::ExecuteDropIndex(pSyntaxNode ast, ExecuteContext *context
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteDropIndex" << std::endl;
 #endif
-if(ast == nullptr || current_db_ == "")
+  if(ast == nullptr || current_db_.empty())
     return DB_FAILED;
+
   CatalogManager* current_CMgr = dbs_[current_db_]->catalog_mgr_;
   string index_name(ast->child_->val_);
   vector<TableInfo*> table_names;
   current_CMgr->GetTables(table_names);
   string table_name;
+  bool isFound = false;
+
+  /* 1. 查找该索引 */
   for(TableInfo* tmp_info: table_names)
   {
     vector<IndexInfo*> index_infos;
@@ -416,25 +671,30 @@ if(ast == nullptr || current_db_ == "")
       if(stp_idx_info->GetIndexName() == index_name)
       {
         table_name = tmp_info->GetTableName();
-        goto out;
+        isFound = true;
+        break;
       }
     }
+    if(isFound) break;
   }
-  out:;
-  IndexInfo* tmp_indexinfo;
-  dberr_t if_getindex_success = current_CMgr->GetIndex(table_name, index_name, tmp_indexinfo);
-  if(if_getindex_success != DB_SUCCESS)
+
+  /* 2. 删除索引 */
+  IndexInfo* tmp_indexInfo;
+  dberr_t if_getIndex_success = current_CMgr->GetIndex(table_name, index_name, tmp_indexInfo);
+
+  if(if_getIndex_success != DB_SUCCESS)
   {
-    std::cout << "no index: " << index_name << endl;
-    return if_getindex_success;
+    std::cout << "Error: No index: " << index_name << endl;
+    return if_getIndex_success;
   }
+
   dberr_t if_create_success = current_CMgr->DropIndex(table_name, index_name);
   if(if_create_success != DB_SUCCESS)
   {
-    std::cout << "fail to drop index: " << index_name << endl;
+    std::cout << "Error: Fail to drop index: " << index_name << endl;
     return if_create_success;
   }
-    
+
   return DB_SUCCESS;
 }
 
@@ -469,38 +729,46 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
 #ifdef ENABLE_EXECUTE_DEBUG
   LOG(INFO) << "ExecuteExecfile" << std::endl;
 #endif
+  if(ast == nullptr || current_db_.empty())
+    return DB_FAILED;
+
   string filename(ast->child_->val_);
-  fstream exefstream(filename);
-  if(!exefstream.is_open())
+  fstream exeFile(filename);
+  if(!exeFile.is_open())
   {
-    std::cout << "fail to open '" << filename << "'" << endl;
+    std::cout << "Error: Fail to open '" << filename << "'." << endl;
     return DB_FAILED;
   }
+
   int buffer_size = 1024;
   char* cmd = new char[buffer_size];
-  
-  while (1) 
+
+  while (1)
   {
     char tmp_char;
     int tmp_counter = 0;
-    do 
-    { 
-      if(exefstream.eof())
+
+    /* 1. 读入文件 */
+    do
+    {
+      if(exeFile.eof())
       {
         delete []cmd;
-        return DB_SUCCESS;
+        break;
       }
-      tmp_char = exefstream.get();
+      tmp_char = exeFile.get();
       cmd[tmp_counter++] = tmp_char;
       if(tmp_counter >= buffer_size)
       {
         std::cout << "buffer overflow" << endl;
         return DB_FAILED;
-      } 
-    }while(tmp_char != ';');
+      }
+    } while(tmp_char != ';');
+
+    /* 2. 对文件输入的指令进行语法树分析 */
     cmd[tmp_counter] = 0;
     YY_BUFFER_STATE bp = yy_scan_string(cmd);
-    if (bp == nullptr) 
+    if (bp == nullptr)
     {
       LOG(ERROR) << "Failed to create yy buffer state." << std::endl;
       exit(1);
@@ -508,21 +776,22 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     yy_switch_to_buffer(bp);
     MinisqlParserInit();
     yyparse();
-    if (MinisqlParserGetError()) 
+    if (MinisqlParserGetError())
     {
       printf("%s\n", MinisqlParserGetErrorMessage());
-    } 
+    }
     this->Execute(MinisqlGetParserRootNode());
     MinisqlParserFinish();
     yy_delete_buffer(bp);
     yylex_destroy();
-    if (context->flag_quit_) 
+    if (context->flag_quit_)
     {
       printf("bye!\n");
       break;
     }
   }
-  return DB_FAILED;
+
+  return DB_SUCCESS;
 }
 
 /**
@@ -535,4 +804,14 @@ dberr_t ExecuteEngine::ExecuteQuit(pSyntaxNode ast, ExecuteContext *context) {
   ASSERT(ast->type_ == kNodeQuit, "Unexpected node type.");
   context->flag_quit_ = true;
   return DB_SUCCESS;
+}
+
+void ExecuteEngine::SaveDBs()
+{
+//  fstream out_file_stream(dbs_name_file, ios::out);
+//  for(std::pair<std::string, DBStorageEngine*> db_info : dbs_)
+//  {
+//    out_file_stream << db_info.first << endl;
+//  }
+//  out_file_stream.close();
 }

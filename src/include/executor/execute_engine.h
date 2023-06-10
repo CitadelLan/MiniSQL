@@ -78,6 +78,8 @@ class ExecuteEngine {
 
   dberr_t ExecuteQuit(pSyntaxNode ast, ExecuteContext *context);
 
+  void SaveDBs();
+
  private:
   std::unordered_map<std::string, DBStorageEngine *> dbs_; /** all opened databases */
   std::string current_db_;                                 /** current database */

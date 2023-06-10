@@ -185,7 +185,6 @@ TEST_F(ExecutorTest, SimpleUpdateTest) {
   }
 }
 
-// DELETE FROM table-1 WHERE id == 50;
 TEST_F(ExecutorTest, SimpleIndexTest) {
   // Construct query plan
   TableInfo *table_info;
