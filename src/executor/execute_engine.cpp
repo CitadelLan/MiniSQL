@@ -814,10 +814,11 @@ dberr_t ExecuteEngine::ExecuteQuit(pSyntaxNode ast, ExecuteContext *context) {
 
 void ExecuteEngine::SaveDBs()
 {
-//  fstream out_file_stream(dbs_name_file, ios::out);
 //  for(std::pair<std::string, DBStorageEngine*> db_info : dbs_)
 //  {
-//    out_file_stream << db_info.first << endl;
+//    std::string dbs_name_file = db_info.first;
+//    fstream out_file_stream(dbs_name_file, ios::out);
+//    out_file_stream << db_info.second << endl;
+//    out_file_stream.close();
 //  }
-//  out_file_stream.close();
 }
