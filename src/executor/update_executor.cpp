@@ -35,44 +35,42 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
   if(child_executor_->Next(row, rid))
   {
     /* 2. 更新 */
-    /* 2.1. 标记待删除元组 */
-    if(tableHeap->MarkDelete(*rid, nullptr)) {
-      /* 2.2. 检查是否包含索引，如果有，更新索引 */
-      Schema *schema = tableInfo->GetSchema();
-      const std::vector<Column *> columns = schema->GetColumns(0);
-      std::vector<IndexInfo *> tmp;
-      catalog->GetTableIndexes(tableName, tmp);
-      IndexInfo *index;
-      Row newTuple = GenerateUpdatedTuple(*row); // 获取更新的新元组
-      bool foundIndex = false;
+    /* 2.2. 检查是否包含索引，如果有，更新索引 */
+    Schema *schema = tableInfo->GetSchema();
+    const std::vector<Column *> columns = schema->GetColumns(0);
+    std::vector<IndexInfo *> tmp;
+    catalog->GetTableIndexes(tableName, tmp);
+    IndexInfo *index;
+    Row newTuple = GenerateUpdatedTuple(*row); // 获取更新的新元组
+    bool foundIndex = false;
 
-      for(auto it : tmp)
-      {
-        if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
-          for (auto it2 : columns)
-          {
-            uint32_t col;
-            schema->GetColumnIndex(it2->GetName(), col);
-            std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
-            if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
-              Row tmp, removal;
-              std::vector<RowId> result;
-              newTuple.GetKeyFromRow(schema, index->GetIndexKeySchema(), tmp);
-              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), removal);
-              index->GetIndex()->ScanKey(tmp, result, nullptr);
-              if(result.empty()) {
-                tableHeap->MarkDelete(*rid, nullptr);
-                tableHeap->ApplyDelete(*rid, nullptr);
-                tableHeap->InsertTuple(newTuple, nullptr);
-                index->GetIndex()->InsertEntry(tmp, newTuple.GetRowId(), nullptr);
-                index->GetIndex()->RemoveEntry(removal, row->GetRowId(), nullptr);
-                foundIndex = true;
-              }
-              else
-              {
-                cout << "Error: updated tuples violated primary/unique key attribute." << endl;
-                return false;
-              }
+    for(auto it : tmp)
+    {
+      if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
+        for (auto it2 : columns)
+        {
+          uint32_t col;
+          schema->GetColumnIndex(it2->GetName(), col);
+          std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
+          if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
+            Row tmpRow, removal;
+            std::vector<RowId> result;
+            newTuple.GetKeyFromRow(schema, index->GetIndexKeySchema(), tmpRow);
+            row->GetKeyFromRow(schema, index->GetIndexKeySchema(), removal);
+            index->GetIndex()->ScanKey(tmpRow, result, nullptr);
+            if(result.empty())
+            {
+              tableHeap->MarkDelete(*rid, nullptr);
+              tableHeap->ApplyDelete(*rid, nullptr);
+              tableHeap->InsertTuple(newTuple, nullptr);
+              index->GetIndex()->InsertEntry(tmpRow, newTuple.GetRowId(), nullptr);
+              index->GetIndex()->RemoveEntry(removal, *rid, nullptr);
+              foundIndex = true;
+            }
+            else
+            {
+              cout << "Error: updated tuples violated primary/unique key attribute." << endl;
+              return false;
             }
           }
         }

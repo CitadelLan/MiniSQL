@@ -99,6 +99,7 @@ bool TablePage::UpdateTuple(const Row &new_row, Row *old_row, Schema *schema, Tr
       SetTupleOffsetAtSlot(i, tuple_offset_i + tuple_size - new_row.GetSerializedSize(schema));
     }
   }
+
   return true;
 }
 

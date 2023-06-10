@@ -72,8 +72,6 @@ class IndexInfo {
     this->key_schema_ = Schema::ShallowCopySchema(schema, meta_data->key_map_);
     // Step3: call CreateIndex to create the index
     this->index_ = CreateIndex(buffer_pool_manager, "bptree");
-    
-    // ASSERT(false, "Not Implemented yet.");
   }
 
   inline Index *GetIndex() { return index_; }

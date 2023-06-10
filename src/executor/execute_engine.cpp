@@ -513,15 +513,14 @@ dberr_t ExecuteEngine::ExecuteCreateTable(pSyntaxNode ast, ExecuteContext *conte
   CatalogManager* current_CMgr = dbs_[current_db_]->catalog_mgr_;
   for(const string& column_name_stp: column_names)
   {
-    /* 这里不清楚到底是用unique还是primary */
+    /* 这里不清楚到底是用unique还是primary——都用，测试的时候可以删掉unique的索引 */
     if(is_primary_key[column_name_stp])
     {
       string stp_index_name = column_name_stp + "_index";
       vector<string> index_columns_stp = {column_name_stp};
       IndexInfo* stp_index_info;
       dberr_t if_create_index_success
-          = current_CMgr->CreateIndex(new_table_name, stp_index_name, index_columns_stp,
-                                      nullptr, stp_index_info, "bptree");
+          = current_CMgr->CreateIndex(new_table_name, stp_index_name, index_columns_stp,nullptr, stp_index_info, "bptree");
       if(if_create_index_success != DB_SUCCESS)
         return if_create_index_success;
     }
