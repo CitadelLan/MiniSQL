@@ -30,10 +30,32 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
 
   /* 1. 获取values_executor中的元组 */
   if(child_executor_->Next(row, nullptr)) {
+    /* ! 检测该row是否违背primary或unique属性 ! */
+    Schema *schema = tableInfo->GetSchema();
+    uint32_t col = 0;
+//    Row indexKey = *row;
+//    TableIterator begin = tableHeap->Begin(nullptr),
+//                  end = tableHeap->End();
+//
+//    for(auto it = begin; it != end; it++) {
+//      for (auto uni : tableInfo->GetMeta()->uni_keys) {
+//        schema->GetColumnIndex(uni, col);
+//        if (CmpBool::kTrue == it->GetField(col)->CompareEquals(*(row->GetField(col)))) {
+//          cout << "Error: violated unique key " << uni << endl;
+//          return false;
+//        }
+//      }
+//      for (auto pri : tableInfo->GetMeta()->pri_keys) {
+//        schema->GetColumnIndex(pri, col);
+//        if (CmpBool::kTrue == it->GetField(col)->CompareEquals(*(row->GetField(col)))) {
+//          cout << "Error: violated primary key " << pri << endl;
+//          return false;
+//        }
+//      }
+//    }
     /* 2. 插入元组 */
     if (tableHeap->InsertTuple(*row, nullptr)) {
       /* 2.1. 检查是否包含索引，如果有，更新索引 */
-      Schema *schema = tableInfo->GetSchema();
       const std::vector<Column *> columns = schema->GetColumns(0);
       std::vector<IndexInfo *> tmp;
       catalog->GetTableIndexes(tableName, tmp);
@@ -44,11 +66,12 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
         if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
           for (auto it2 : columns)
           {
-            uint32_t col;
             schema->GetColumnIndex(it2->GetName(), col);
             std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
             if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
+              *rid = row->GetRowId();
               row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
+              row->SetRowId(*rid);
               index->GetIndex()->InsertEntry(*row, row->GetRowId(), nullptr);
             }
           }

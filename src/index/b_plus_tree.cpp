@@ -468,7 +468,7 @@ IndexIterator BPlusTree::End() {
       currLeaf = nextLeaf;
     }
 
-    return IndexIterator(currLeaf->GetPageId(), buffer_pool_manager_, currLeaf->GetSize() - 1);
+    return IndexIterator(currLeaf->GetPageId(), buffer_pool_manager_, currLeaf->GetSize());
 }
 
 /*****************************************************************************

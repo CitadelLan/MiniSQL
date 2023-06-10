@@ -55,6 +55,7 @@ void IndexScanExecutor::Init() {
   /* 2. 得到comparison节点，判断是不是index里的节点 */
   std::vector<RowId> results;
   Row indexKey;
+  IndexInfo *indexInfo;
   for(auto it : compNodes) {
     int isFound = 0;
     for (const auto &childIt : it->GetChildren()) {
@@ -62,7 +63,8 @@ void IndexScanExecutor::Init() {
       if (childIt->GetType() == ExpressionType::ColumnExpression) {
         auto *index = reinterpret_cast<ColumnValueExpression *>(childIt.get());
         for (int i = 0; i < plan_->indexes_.size(); i++) {
-          std::vector<uint32_t> kMap = plan_->indexes_[i]->GetMeta()->GetKeyMapping();
+          indexInfo = plan_->indexes_[i];
+          std::vector<uint32_t> kMap = indexInfo->GetMeta()->GetKeyMapping();
           if (find(kMap.begin(), kMap.end(), index->GetColIdx()) != kMap.end()) {
             indexComp = *reinterpret_cast<ComparisonExpression *>(it);
             isFound++;
@@ -74,14 +76,14 @@ void IndexScanExecutor::Init() {
         std::vector<Field> tmp;
         tmp.push_back(indexField);
         indexKey = Row(tmp);
-        indexKey.GetKeyFromRow(schemaIn, schemaOut, indexKey);
+        // indexKey.GetKeyFromRow(schemaIn, schemaOut, indexKey);
         isFound++;
       }
 
       /* 2.2. 得到符合index条件的节点，判断ComparisonExpression的比较类型，并通过其来寻找符合index条件的集合 */
       if (isFound == 2) {
         std::string comparator = indexComp.GetComparisonType();
-        auto *bpIndex = reinterpret_cast<BPlusTreeIndex *>(plan_->indexes_[0]->GetIndex());
+        auto *bpIndex = reinterpret_cast<BPlusTreeIndex *>(indexInfo->GetIndex());
         if(it == compNodes[0]) {
           bpIndex->ScanKey(indexKey, results, nullptr, comparator);
           list = results;

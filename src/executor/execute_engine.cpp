@@ -797,6 +797,8 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     }
   }
 
+  SaveDBs();
+
   return DB_SUCCESS;
 }
 
@@ -809,16 +811,17 @@ dberr_t ExecuteEngine::ExecuteQuit(pSyntaxNode ast, ExecuteContext *context) {
 #endif
   ASSERT(ast->type_ == kNodeQuit, "Unexpected node type.");
   context->flag_quit_ = true;
+  SaveDBs();
   return DB_SUCCESS;
 }
 
 void ExecuteEngine::SaveDBs()
 {
-//  for(std::pair<std::string, DBStorageEngine*> db_info : dbs_)
-//  {
-//    std::string dbs_name_file = db_info.first;
-//    fstream out_file_stream(dbs_name_file, ios::out);
-//    out_file_stream << db_info.second << endl;
-//    out_file_stream.close();
-//  }
+  for(std::pair<std::string, DBStorageEngine*> db_info : dbs_)
+  {
+    std::string dbs_name_file = db_info.first;
+    fstream out_file_stream(dbs_name_file, ios::out);
+    out_file_stream << db_info.second << endl;
+    out_file_stream.close();
+  }
 }
