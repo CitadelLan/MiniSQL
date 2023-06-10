@@ -41,11 +41,8 @@ void IndexScanExecutor::Init() {
       compNodes.push_back(reinterpret_cast<ComparisonExpression *>(currNode));
 
     /* 1.1. 如果下一层没到叶子层，push */
-    for(auto it : currNode->GetChildren()) {
-      if (it->GetType() == ExpressionType::LogicExpression ||
-          it->GetType() == ExpressionType::ComparisonExpression)
+    for(const auto& it : currNode->GetChildren())
         expTree.push(it.get());
-    }
 
     expTree.pop();
   }
@@ -54,13 +51,14 @@ void IndexScanExecutor::Init() {
   std::vector<RowId> results;
   Row indexKey;
   IndexInfo *indexInfo;
+  bool flag = false;
   for(auto it : compNodes) {
     int isFound = 0;
     for (const auto &childIt : it->GetChildren()) {
       /* 2.1. 找到了ColumnExpression节点，检验其对应下标是否与index中的一致 */
       if (childIt->GetType() == ExpressionType::ColumnExpression) {
         auto *index = reinterpret_cast<ColumnValueExpression *>(childIt.get());
-        for (int i = 0; i < plan_->indexes_.size(); i++) {
+        for (unsigned int i = 0; i < plan_->indexes_.size(); i++) {
           indexInfo = plan_->indexes_[i];
           std::vector<uint32_t> kMap = indexInfo->GetMeta()->GetKeyMapping();
           if (find(kMap.begin(), kMap.end(), index->GetColIdx()) != kMap.end()) {
@@ -82,9 +80,10 @@ void IndexScanExecutor::Init() {
       if (isFound == 2) {
         std::string comparator = indexComp.GetComparisonType();
         auto *bpIndex = reinterpret_cast<BPlusTreeIndex *>(indexInfo->GetIndex());
-        if(it == compNodes[0]) {
+        if(!flag) {
           bpIndex->ScanKey(indexKey, results, nullptr, comparator);
           list = results;
+          flag = true;
         }
         else {
           std::vector<RowId> tmp;
