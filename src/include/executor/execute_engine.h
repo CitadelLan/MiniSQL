@@ -45,6 +45,8 @@ class ExecuteEngine {
 
   void ExecuteInformation(dberr_t result);
 
+  void SaveDBs();
+
  private:
   static std::unique_ptr<AbstractExecutor> CreateExecutor(ExecuteContext *exec_ctx, const AbstractPlanNodeRef &plan);
 
@@ -77,8 +79,6 @@ class ExecuteEngine {
   dberr_t ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context);
 
   dberr_t ExecuteQuit(pSyntaxNode ast, ExecuteContext *context);
-
-  void SaveDBs();
 
  private:
   std::unordered_map<std::string, DBStorageEngine *> dbs_; /** all opened databases */

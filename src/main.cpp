@@ -80,6 +80,7 @@ int main(int argc, char **argv) {
     // quit condition
     engine.ExecuteInformation(result);
     if (result == DB_QUIT) {
+      engine.SaveDBs();
       break;
     }
   }

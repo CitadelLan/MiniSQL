@@ -261,7 +261,8 @@ dberr_t ExecuteEngine::ExecuteCreateDatabase(pSyntaxNode ast, ExecuteContext *co
   auto* new_database = new DBStorageEngine(db_name, true);
   dbs_[db_name] = new_database;
   std::cout << "Database " << db_name << " created." << endl;
-  // this->SaveDBs();
+
+  SaveDBs();
 
   return DB_SUCCESS;
 }
@@ -287,7 +288,8 @@ dberr_t ExecuteEngine::ExecuteDropDatabase(pSyntaxNode ast, ExecuteContext *cont
   target_db->~DBStorageEngine();
   dbs_.erase(del_db_name);
   std::cout << "Database " << del_db_name << " deleted." << endl;
-  // this->SaveDBs();
+
+  SaveDBs();
 
   return DB_SUCCESS;
 }
@@ -528,6 +530,8 @@ dberr_t ExecuteEngine::ExecuteCreateTable(pSyntaxNode ast, ExecuteContext *conte
   tmp_table_info->GetMeta()->pri_keys = pri_keys;
   tmp_table_info->GetMeta()->uni_keys = uni_keys;
 
+  SaveDBs();
+
   return DB_SUCCESS;
 }
 
@@ -542,6 +546,8 @@ dberr_t ExecuteEngine::ExecuteDropTable(pSyntaxNode ast, ExecuteContext *context
     return DB_FAILED;
 
   string drop_table_name(ast->child_->val_);
+
+  SaveDBs();
 
   return dbs_[current_db_]->catalog_mgr_->DropTable(drop_table_name);
 }
@@ -612,6 +618,7 @@ dberr_t ExecuteEngine::ExecuteCreateIndex(pSyntaxNode ast, ExecuteContext *conte
   {
     bool if_could = false;
     vector<string> uni_colum_list = target_table->GetMeta()->uni_keys;
+    LOG(INFO) << uni_colum_list[0] << endl;
 
     /* 2.1. 检验该columnName是否可以建立索引项 */
     for(const string& name: uni_colum_list)
@@ -642,6 +649,16 @@ dberr_t ExecuteEngine::ExecuteCreateIndex(pSyntaxNode ast, ExecuteContext *conte
                                     new_indexInfo, "bptree");
   if(if_createIndex_success != DB_SUCCESS)
     return if_createIndex_success;
+
+  TableInfo *tableInfo;
+  context->GetCatalog()->GetTable(table_name, tableInfo);
+  for(auto it = tableInfo->GetTableHeap()->Begin(nullptr); it != tableInfo->GetTableHeap()->End(); it++) {
+    Row row = it.operator*();
+    row.GetKeyFromRow(tableInfo->GetSchema(), new_indexInfo->GetIndexKeySchema(), row);
+    new_indexInfo->GetIndex()->InsertEntry(row, it.operator*().GetRowId(), nullptr);
+  }
+
+  SaveDBs();
 
   return DB_SUCCESS;
 }
@@ -696,6 +713,8 @@ dberr_t ExecuteEngine::ExecuteDropIndex(pSyntaxNode ast, ExecuteContext *context
     std::cout << "Error: Fail to drop index: " << index_name << endl;
     return if_create_success;
   }
+
+  SaveDBs();
 
   return DB_SUCCESS;
 }
@@ -769,7 +788,6 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     } while(tmp_char != ';');
 
     /* 2. 对文件输入的指令进行语法树分析 */
-    // LOG(INFO) << "Command: " << cmd << endl;
     cmd[tmp_counter] = 0;
     YY_BUFFER_STATE bp = yy_scan_string(cmd);
     if (bp == nullptr)
@@ -811,7 +829,7 @@ dberr_t ExecuteEngine::ExecuteQuit(pSyntaxNode ast, ExecuteContext *context) {
   ASSERT(ast->type_ == kNodeQuit, "Unexpected node type.");
   context->flag_quit_ = true;
   SaveDBs();
-  return DB_SUCCESS;
+  return DB_QUIT;
 }
 
 void ExecuteEngine::SaveDBs()

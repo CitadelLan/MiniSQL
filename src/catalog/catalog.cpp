@@ -292,8 +292,11 @@ dberr_t CatalogManager::FlushCatalogMetaPage() const {
   auto meta_page = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID);
   catalog_meta_->SerializeTo(meta_page->GetData());
 
-  if (!buffer_pool_manager_->FlushPage(CATALOG_META_PAGE_ID))
+  if (!buffer_pool_manager_->FlushPage(CATALOG_META_PAGE_ID)
+      && !buffer_pool_manager_->FlushPage(INDEX_ROOTS_PAGE_ID))
     return DB_FAILED;
+
+  // LOG(INFO) << "CATALOG FLUSHED" << endl;
 
   return DB_SUCCESS;
 }

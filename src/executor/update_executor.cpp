@@ -44,6 +44,7 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
       catalog->GetTableIndexes(tableName, tmp);
       IndexInfo *index;
       Row newTuple = GenerateUpdatedTuple(*row); // 获取更新的新元组
+      bool foundIndex = false;
 
       for(auto it : tmp)
       {
@@ -54,16 +55,35 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
             schema->GetColumnIndex(it2->GetName(), col);
             std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
             if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
-              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
-              index->GetIndex()->RemoveEntry(*row, *rid, nullptr);
-              index->GetIndex()->InsertEntry(newTuple, *rid, nullptr);
+              Row tmp, removal;
+              std::vector<RowId> result;
+              newTuple.GetKeyFromRow(schema, index->GetIndexKeySchema(), tmp);
+              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), removal);
+              index->GetIndex()->ScanKey(tmp, result, nullptr);
+              if(result.empty()) {
+                tableHeap->MarkDelete(*rid, nullptr);
+                tableHeap->ApplyDelete(*rid, nullptr);
+                tableHeap->InsertTuple(newTuple, nullptr);
+                index->GetIndex()->InsertEntry(tmp, newTuple.GetRowId(), nullptr);
+                index->GetIndex()->RemoveEntry(removal, row->GetRowId(), nullptr);
+                foundIndex = true;
+              }
+              else
+              {
+                cout << "Error: updated tuples violated primary/unique key attribute." << endl;
+                return false;
+              }
             }
           }
         }
       }
 
-      tableHeap->ApplyDelete(*rid, nullptr);
-      tableHeap->InsertTuple(newTuple, nullptr);
+      if(!foundIndex)
+      {
+        tableHeap->MarkDelete(*rid, nullptr);
+        tableHeap->ApplyDelete(*rid, nullptr);
+        tableHeap->InsertTuple(newTuple, nullptr);
+      }
 
       return true;
     }
