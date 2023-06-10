@@ -17,6 +17,8 @@
 #include "planner/planner.h"
 #include "utils/utils.h"
 
+#define ENABLE__EXECUTE_DEBUG
+
 ExecuteEngine::ExecuteEngine() {
   char path[] = "./databases";
   DIR *dir;
@@ -26,7 +28,7 @@ ExecuteEngine::ExecuteEngine() {
   }
   /** When you have completed all the code for
    *  the test, run it using main.cpp and uncomment
-   *  this part of the code.
+   *  this part of the code. **/
   struct dirent *stdir;
   while((stdir = readdir(dir)) != nullptr) {
     if( strcmp( stdir->d_name , "." ) == 0 ||
@@ -34,7 +36,7 @@ ExecuteEngine::ExecuteEngine() {
         stdir->d_name[0] == '.')
       continue;
     dbs_[stdir->d_name] = new DBStorageEngine(stdir->d_name, false);
-  }**/
+  }
   // end of comment
   closedir(dir);
 }
@@ -751,8 +753,10 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     /* 1. 读入文件 */
     do
     {
+      printf("%s\n", cmd);
       if(exeFile.eof())
       {
+        // LOG(INFO) << "Before delete: " << cmd << endl;
         delete []cmd;
         break;
       }
@@ -766,6 +770,7 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     } while(tmp_char != ';');
 
     /* 2. 对文件输入的指令进行语法树分析 */
+    // LOG(INFO) << "Command: " << cmd << endl;
     cmd[tmp_counter] = 0;
     YY_BUFFER_STATE bp = yy_scan_string(cmd);
     if (bp == nullptr)
@@ -779,6 +784,7 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     if (MinisqlParserGetError())
     {
       printf("%s\n", MinisqlParserGetErrorMessage());
+      return DB_FAILED;
     }
     this->Execute(MinisqlGetParserRootNode());
     MinisqlParserFinish();
