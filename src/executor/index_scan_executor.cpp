@@ -28,8 +28,6 @@ void IndexScanExecutor::Init() {
   TableInfo *targetInfo;
   catalog->GetTable(tableName, targetInfo);
   // --------------------------------------------------------------
-  const Schema *schemaOut = GetOutputSchema(),
-               *schemaIn = targetInfo->GetSchema();
 
   expTree.push(plan_->GetPredicate().get());
 

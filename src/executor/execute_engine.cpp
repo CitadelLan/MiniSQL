@@ -753,7 +753,6 @@ dberr_t ExecuteEngine::ExecuteExecfile(pSyntaxNode ast, ExecuteContext *context)
     /* 1. 读入文件 */
     do
     {
-      printf("%s\n", cmd);
       if(exeFile.eof())
       {
         // LOG(INFO) << "Before delete: " << cmd << endl;
