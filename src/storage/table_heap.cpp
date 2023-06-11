@@ -69,11 +69,14 @@ bool TableHeap::UpdateTuple(const Row &row, const RowId &rid, Transaction *txn) 
   if(!currPg)  return false; // 未找到页
 
   /* 保存当前Page */
-  Row historyRow(rid);
+  Row *historyRow = new Row(rid);
+  GetTuple(historyRow, nullptr);
 
   /* 更新页，由于其未存储至硬盘，标记为脏页 */
-  update_indicator =currPg->UpdateTuple(row, &historyRow, schema_, txn,
+  update_indicator =currPg->UpdateTuple(row, historyRow, schema_, txn,
                           lock_manager_, log_manager_);
+
+  delete historyRow;
   buffer_pool_manager_->UnpinPage(currPg->GetPageId(), true);
 
   return update_indicator;

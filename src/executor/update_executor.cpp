@@ -42,7 +42,6 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
     catalog->GetTableIndexes(tableName, tmp);
     IndexInfo *index;
     Row newTuple = GenerateUpdatedTuple(*row); // 获取更新的新元组
-    bool foundIndex = false;
 
     for(auto it : tmp)
     {
@@ -65,7 +64,8 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
               tableHeap->InsertTuple(newTuple, nullptr);
               index->GetIndex()->InsertEntry(tmpRow, newTuple.GetRowId(), nullptr);
               index->GetIndex()->RemoveEntry(removal, *rid, nullptr);
-              foundIndex = true;
+
+              return true;
             }
             else
             {
@@ -75,16 +75,13 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
           }
         }
       }
-
-      if(!foundIndex)
-      {
-        tableHeap->MarkDelete(*rid, nullptr);
-        tableHeap->ApplyDelete(*rid, nullptr);
-        tableHeap->InsertTuple(newTuple, nullptr);
-      }
-
-      return true;
     }
+
+    tableHeap->MarkDelete(*rid, nullptr);
+    tableHeap->ApplyDelete(*rid, nullptr);
+    tableHeap->InsertTuple(newTuple, nullptr);
+
+    return true;
   }
 
   return false;
