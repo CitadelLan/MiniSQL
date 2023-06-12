@@ -146,9 +146,9 @@ page_id_t DiskManager::MapPageId(page_id_t logical_page_id) {
   size_t pageSize = BitmapPage<PAGE_SIZE>::GetMaxSupportedSize();
 
   // return (pageSize+1) * (logical_page_id / pageSize) + 1 + (logical_page_id % pageSize+1);
-  //    实际extent页数 * 在该page前的extent数 + 当前extent的BMap + (当前extent的页下标+1)
+  //    实际extent页数 * 在该page前的extent数 + 当前extent的BMap + (当前extent的页下标+meta page)
   return logical_page_id / pageSize + logical_page_id + 2;
-  //    bitMap数 + 数据存储页数 + 当前extent的bitMap + 1（extent存储下标从0开始）
+  //    bitMap数 + 数据存储页数 + 当前extent的bitMap + 1（meta page）
 }
 
 
