@@ -64,6 +64,7 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
               tableHeap->InsertTuple(newTuple, nullptr);
               index->GetIndex()->InsertEntry(tmpRow, newTuple.GetRowId(), nullptr);
               index->GetIndex()->RemoveEntry(removal, *rid, nullptr);
+              // cout << "Index affected." << endl;
 
               return true;
             }
