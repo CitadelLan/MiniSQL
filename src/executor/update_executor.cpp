@@ -70,7 +70,7 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
             }
             else
             {
-              cout << "Error: updated tuples violated primary/unique key attribute." << endl;
+              // cout << "Error: updated tuples violated primary/unique key attribute." << endl;
               return false;
             }
           }

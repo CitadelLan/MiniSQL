@@ -53,8 +53,9 @@ bool DeleteExecutor::Next(Row *row, RowId *rid) {
             schema->GetColumnIndex(it2->GetName(), col);
             std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
             if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
-              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
-              index->GetIndex()->RemoveEntry(*row, *rid, nullptr);
+              Row tmp;
+              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), tmp);
+              index->GetIndex()->RemoveEntry(tmp, *rid, nullptr);
             }
           }
         }
