@@ -1,10 +1,10 @@
 Determining size of unsigned __int16 failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_f59c4/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f59c4.dir/build.make CMakeFiles/cmTC_f59c4.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_df5ce/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_df5ce.dir/build.make CMakeFiles/cmTC_df5ce.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_f59c4.dir/HAVE___UINT16.cpp.o
-/usr/bin/c++   -fPIE -std=gnu++17 -o CMakeFiles/cmTC_f59c4.dir/HAVE___UINT16.cpp.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CheckTypeSize/HAVE___UINT16.cpp
+Building CXX object CMakeFiles/cmTC_df5ce.dir/HAVE___UINT16.cpp.o
+/usr/bin/c++   -fPIE -std=gnu++17 -o CMakeFiles/cmTC_df5ce.dir/HAVE___UINT16.cpp.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CheckTypeSize/HAVE___UINT16.cpp
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CheckTypeSize/HAVE___UINT16.cpp:27:22: error: expected primary-expression before ‘unsigned’
    27 | #define SIZE (sizeof(unsigned __int16))
       |                      ^~~~~~~~
@@ -48,9 +48,9 @@ Building CXX object CMakeFiles/cmTC_f59c4.dir/HAVE___UINT16.cpp.o
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CheckTypeSize/HAVE___UINT16.cpp:29:3: note: to match this ‘(’
    29 |   ('0' + ((SIZE / 10000)%10)),
       |   ^
-gmake[1]: *** [CMakeFiles/cmTC_f59c4.dir/build.make:78: CMakeFiles/cmTC_f59c4.dir/HAVE___UINT16.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_df5ce.dir/build.make:78: CMakeFiles/cmTC_df5ce.dir/HAVE___UINT16.cpp.o] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_f59c4/fast] Error 2
+gmake: *** [Makefile:127: cmTC_df5ce/fast] Error 2
 
 
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CheckTypeSize/HAVE___UINT16.cpp:
@@ -109,14 +109,14 @@ int main(int argc, char *argv[])
 Performing C++ SOURCE FILE Test HAVE_NO_UNNAMED_TYPE_TEMPLATE_ARGS failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_4ad1e/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_4ad1e.dir/build.make CMakeFiles/cmTC_4ad1e.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_ae19f/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_ae19f.dir/build.make CMakeFiles/cmTC_ae19f.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_4ad1e.dir/src.cxx.o
-/usr/bin/c++ -DHAVE_NO_UNNAMED_TYPE_TEMPLATE_ARGS  -fPIE   -Wunnamed-type-template-args -o CMakeFiles/cmTC_4ad1e.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_ae19f.dir/src.cxx.o
+/usr/bin/c++ -DHAVE_NO_UNNAMED_TYPE_TEMPLATE_ARGS  -fPIE   -Wunnamed-type-template-args -o CMakeFiles/cmTC_ae19f.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
 c++: error: unrecognized command-line option '-Wunnamed-type-template-args'
-gmake[1]: *** [CMakeFiles/cmTC_4ad1e.dir/build.make:78: CMakeFiles/cmTC_4ad1e.dir/src.cxx.o] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_ae19f.dir/build.make:78: CMakeFiles/cmTC_ae19f.dir/src.cxx.o] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_4ad1e/fast] Error 2
+gmake: *** [Makefile:127: cmTC_ae19f/fast] Error 2
 
 
 Source file was:
@@ -124,18 +124,18 @@ int main() { return 0; }
 Determining if the pthread_threadid_np exist failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_95114/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_95114.dir/build.make CMakeFiles/cmTC_95114.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_49f23/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_49f23.dir/build.make CMakeFiles/cmTC_49f23.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_95114.dir/CheckSymbolExists.cxx.o
-/usr/bin/c++   -fPIE -std=gnu++17 -o CMakeFiles/cmTC_95114.dir/CheckSymbolExists.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Building CXX object CMakeFiles/cmTC_49f23.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++   -fPIE -std=gnu++17 -o CMakeFiles/cmTC_49f23.dir/CheckSymbolExists.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:8:19: error: ‘pthread_threadid_np’ was not declared in this scope; did you mean ‘pthread_tryjoin_np’?
     8 |   return ((int*)(&pthread_threadid_np))[argc];
       |                   ^~~~~~~~~~~~~~~~~~~
       |                   pthread_tryjoin_np
-gmake[1]: *** [CMakeFiles/cmTC_95114.dir/build.make:78: CMakeFiles/cmTC_95114.dir/CheckSymbolExists.cxx.o] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_49f23.dir/build.make:78: CMakeFiles/cmTC_49f23.dir/CheckSymbolExists.cxx.o] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_95114/fast] Error 2
+gmake: *** [Makefile:127: cmTC_49f23/fast] Error 2
 
 
 File /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
@@ -155,34 +155,34 @@ int main(int argc, char** argv)
 Determining if the function UnDecorateSymbolName exists in the dbghelp failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_3c94a/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_3c94a.dir/build.make CMakeFiles/cmTC_3c94a.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_f6b02/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f6b02.dir/build.make CMakeFiles/cmTC_f6b02.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3c94a.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=UnDecorateSymbolName -fPIE -o CMakeFiles/cmTC_3c94a.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
-Linking C executable cmTC_3c94a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3c94a.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=UnDecorateSymbolName -rdynamic CMakeFiles/cmTC_3c94a.dir/CheckFunctionExists.c.o -o cmTC_3c94a  -ldbghelp 
+Building C object CMakeFiles/cmTC_f6b02.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=UnDecorateSymbolName -fPIE -o CMakeFiles/cmTC_f6b02.dir/CheckFunctionExists.c.o -c /usr/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f6b02
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f6b02.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=UnDecorateSymbolName -rdynamic CMakeFiles/cmTC_f6b02.dir/CheckFunctionExists.c.o -o cmTC_f6b02  -ldbghelp 
 /usr/bin/ld: cannot find -ldbghelp: No such file or directory
 collect2: error: ld returned 1 exit status
-gmake[1]: *** [CMakeFiles/cmTC_3c94a.dir/build.make:99: cmTC_3c94a] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_f6b02.dir/build.make:99: cmTC_f6b02] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_3c94a/fast] Error 2
+gmake: *** [Makefile:127: cmTC_f6b02/fast] Error 2
 
 
 
 Performing C++ SOURCE FILE Test HAVE___DECLSPEC failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_6b22f/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6b22f.dir/build.make CMakeFiles/cmTC_6b22f.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_9947a/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_9947a.dir/build.make CMakeFiles/cmTC_9947a.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6b22f.dir/src.cxx.o
-/usr/bin/c++ -DHAVE___DECLSPEC  -fPIE -o CMakeFiles/cmTC_6b22f.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_9947a.dir/src.cxx.o
+/usr/bin/c++ -DHAVE___DECLSPEC  -fPIE -o CMakeFiles/cmTC_9947a.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx:2:11: error: expected constructor, destructor, or type conversion before ‘(’ token
     2 | __declspec(selectany) int a;
       |           ^
-gmake[1]: *** [CMakeFiles/cmTC_6b22f.dir/build.make:78: CMakeFiles/cmTC_6b22f.dir/src.cxx.o] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_9947a.dir/build.make:78: CMakeFiles/cmTC_9947a.dir/src.cxx.o] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_6b22f/fast] Error 2
+gmake: *** [Makefile:127: cmTC_9947a/fast] Error 2
 
 
 Source file was:
@@ -193,16 +193,16 @@ int main(void) { return 0; }
 Performing C++ SOURCE FILE Test STL_NO_NAMESPACE failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_49af8/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_49af8.dir/build.make CMakeFiles/cmTC_49af8.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_6967a/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6967a.dir/build.make CMakeFiles/cmTC_6967a.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_49af8.dir/src.cxx.o
-/usr/bin/c++ -DSTL_NO_NAMESPACE  -fPIE -o CMakeFiles/cmTC_49af8.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_6967a.dir/src.cxx.o
+/usr/bin/c++ -DSTL_NO_NAMESPACE  -fPIE -o CMakeFiles/cmTC_6967a.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx:3:1: error: ‘vector’ does not name a type
     3 | vector<int> t; int main() { }
       | ^~~~~~
-gmake[1]: *** [CMakeFiles/cmTC_49af8.dir/build.make:78: CMakeFiles/cmTC_49af8.dir/src.cxx.o] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_6967a.dir/build.make:78: CMakeFiles/cmTC_6967a.dir/src.cxx.o] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_49af8/fast] Error 2
+gmake: *** [Makefile:127: cmTC_6967a/fast] Error 2
 
 
 Source file was:
@@ -213,16 +213,16 @@ vector<int> t; int main() { }
 Performing C++ SOURCE FILE Test HAVE_MSVC_TLS failed with the following output:
 Change Dir: /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_d062c/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_d062c.dir/build.make CMakeFiles/cmTC_d062c.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_00665/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_00665.dir/build.make CMakeFiles/cmTC_00665.dir/build
 gmake[1]: Entering directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_d062c.dir/src.cxx.o
-/usr/bin/c++ -DHAVE_MSVC_TLS  -fPIE -o CMakeFiles/cmTC_d062c.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_00665.dir/src.cxx.o
+/usr/bin/c++ -DHAVE_MSVC_TLS  -fPIE -o CMakeFiles/cmTC_00665.dir/src.cxx.o -c /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx
 /mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp/src.cxx:2:11: error: expected constructor, destructor, or type conversion before ‘(’ token
     2 | __declspec(thread) int tls;
       |           ^
-gmake[1]: *** [CMakeFiles/cmTC_d062c.dir/build.make:78: CMakeFiles/cmTC_d062c.dir/src.cxx.o] Error 1
+gmake[1]: *** [CMakeFiles/cmTC_00665.dir/build.make:78: CMakeFiles/cmTC_00665.dir/src.cxx.o] Error 1
 gmake[1]: Leaving directory '/mnt/d/LM/Database/minisql/cmake-build-debug-wsl/CMakeFiles/CMakeTmp'
-gmake: *** [Makefile:127: cmTC_d062c/fast] Error 2
+gmake: *** [Makefile:127: cmTC_00665/fast] Error 2
 
 
 Source file was:
