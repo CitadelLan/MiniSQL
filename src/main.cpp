@@ -60,15 +60,15 @@ int main(int argc, char **argv) {
     yyparse();
 
     // parse result handle
-    if (MinisqlParserGetError()) {
-      // error
-      printf("%s\n", MinisqlParserGetErrorMessage());\
-    } else {
-      // Comment them out if you don't need to debug the syntax tree
-      printf("[INFO] Sql syntax parse ok!\n");\
-      SyntaxTreePrinter printer(MinisqlGetParserRootNode());
-      printer.PrintTree(syntax_tree_file_mgr[syntax_tree_id++]);
-    }
+    // if (MinisqlParserGetError()) {
+    //   // error
+    //   printf("%s\n", MinisqlParserGetErrorMessage());\
+    // } else {
+    //   // Comment them out if you don't need to debug the syntax tree
+    //   printf("[INFO] Sql syntax parse ok!\n");\
+    //   SyntaxTreePrinter printer(MinisqlGetParserRootNode());
+    //   printer.PrintTree(syntax_tree_file_mgr[syntax_tree_id++]);
+    // }
 
     auto result = engine.Execute(MinisqlGetParserRootNode());
 

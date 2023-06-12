@@ -31,7 +31,6 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
 
   /* 1. 获取values_executor中的元组 */
   if(child_executor_->Next(row, nullptr)) {
-    Schema *schema = tableInfo->GetSchema();
     uint32_t col = 0;
 
     /* ! 检测该row是否违背primary或unique属性 ! */
@@ -55,32 +54,17 @@ bool InsertExecutor::Next([[maybe_unused]] Row *row, RowId *rid) {
     }
 
     /* 2. 插入元组 */
-    if (tableHeap->InsertTuple(*row, nullptr)) {
-      /* 2.1. 检查是否包含索引，如果有，更新索引 */
-      const std::vector<Column *> columns = schema->GetColumns(0);
-      std::vector<IndexInfo *> tmp;
-      catalog->GetTableIndexes(tableName, tmp);
-      IndexInfo *index;
-
-      for(auto it : tmp)
-      {
-        if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
-          for (auto it2 : columns)
-          {
-            schema->GetColumnIndex(it2->GetName(), col);
-            std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
-            if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
-              *rid = row->GetRowId();
-              row->GetKeyFromRow(schema, index->GetIndexKeySchema(), *row);
-              row->SetRowId(*rid);
-              index->GetIndex()->InsertEntry(*row, row->GetRowId(), nullptr);
-            }
-          }
-        }
-      }
-
-      return true;
+    tableHeap->InsertTuple(*row, nullptr);
+    *rid = row->GetRowId();
+    for(auto index : indexes) {
+        /* 2.1. 检查是否包含索引，如果有，更新索引 */
+        Row tmp;
+        row->GetKeyFromRow(schemaIn, index->GetIndexKeySchema(), tmp);
+        index->GetIndex()->InsertEntry(tmp, *rid, nullptr);
     }
+
+    return true;
   }
+
   return false;
 }

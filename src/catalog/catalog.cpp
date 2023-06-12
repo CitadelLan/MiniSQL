@@ -142,8 +142,8 @@ dberr_t CatalogManager::CreateTable(const string &table_name, TableSchema *schem
   tables_[table_id] = table_info;
 
   /* 因为对CatalogMeta造成了改动，所以需要将CatalogMeta写回 */
-  auto catalog = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID)->GetData();
-  catalog_meta_->SerializeTo(catalog);
+  auto catalogPg = buffer_pool_manager_->FetchPage(CATALOG_META_PAGE_ID)->GetData();
+  catalog_meta_->SerializeTo(catalogPg);
 
   buffer_pool_manager_->UnpinPage(CATALOG_META_PAGE_ID,true);
   buffer_pool_manager_->UnpinPage(page_id, true);
@@ -356,9 +356,7 @@ dberr_t CatalogManager::LoadIndex(const index_id_t index_id, const page_id_t pag
 
   /* 2.更新 CatalogManager 里的信息 (map for indexes) */
   indexes_[index_id] = index_info;
-  std::unordered_map<std::string, index_id_t> tmp;
-  tmp[index_info->GetIndexName()] = index_id;
-  index_names_[tables_[table_id]->GetTableName()] = tmp;
+  index_names_[tables_[table_id]->GetTableName()][index_info->GetIndexName()] = index_id;
 
   return DB_SUCCESS;
 }

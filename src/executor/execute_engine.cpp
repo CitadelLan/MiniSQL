@@ -529,6 +529,8 @@ dberr_t ExecuteEngine::ExecuteCreateTable(pSyntaxNode ast, ExecuteContext *conte
   tmp_table_info->GetMeta()->pri_keys = pri_keys;
   tmp_table_info->GetMeta()->uni_keys = uni_keys;
 
+  cout << "Table " << new_table_name << " created in " << current_db_ << endl;
+
   SaveDBs();
 
   return DB_SUCCESS;
@@ -617,12 +619,19 @@ dberr_t ExecuteEngine::ExecuteCreateIndex(pSyntaxNode ast, ExecuteContext *conte
   {
     bool if_could = false;
     vector<string> uni_colum_list = target_table->GetMeta()->uni_keys;
-    LOG(INFO) << uni_colum_list[0] << endl;
+    // LOG(INFO) << uni_colum_list[0] << endl;
 
     /* 2.1. 检验该columnName是否可以建立索引项 */
-    for(const string& name: uni_colum_list)
+    TableInfo *tableInfo;
+    context->GetCatalog()->GetTable(table_name, tableInfo);
+
+    for(auto it: tableInfo->GetSchema()->GetColumns(0))
     {
-      if(name == tmp_colum_name)
+      std::string name;
+
+      name = it->GetName();
+
+      if(name == tmp_colum_name && it->IsUnique())
       {
         if_could = true;
         break;
@@ -656,6 +665,8 @@ dberr_t ExecuteEngine::ExecuteCreateIndex(pSyntaxNode ast, ExecuteContext *conte
     row.GetKeyFromRow(tableInfo->GetSchema(), new_indexInfo->GetIndexKeySchema(), row);
     new_indexInfo->GetIndex()->InsertEntry(row, it.operator*().GetRowId(), nullptr);
   }
+
+  std::cout << "Index: " << index_name << " created." << endl;
 
   SaveDBs();
 
@@ -712,6 +723,8 @@ dberr_t ExecuteEngine::ExecuteDropIndex(pSyntaxNode ast, ExecuteContext *context
     std::cout << "Error: Fail to drop index: " << index_name << endl;
     return if_create_success;
   }
+
+  std::cout << "Index: " << index_name << " dropped." << endl;
 
   SaveDBs();
 
