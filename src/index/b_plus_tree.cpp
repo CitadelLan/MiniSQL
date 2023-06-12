@@ -250,7 +250,7 @@ void BPlusTree::Remove(const GenericKey *key, Transaction *transaction) {
   LeafPage *node = reinterpret_cast<LeafPage *>(leaf_page->GetData());
   int org_size = node->GetSize();
 
-  if (org_size != node->RemoveAndDeleteRecord(key, processor_))
+  if (org_size == node->RemoveAndDeleteRecord(key, processor_))
   {
     // leaf_page->WUnlatch();
     buffer_pool_manager_->UnpinPage(leaf_page->GetPageId(), false);
