@@ -40,39 +40,36 @@ bool UpdateExecutor::Next(Row *row, RowId *rid) {
     const std::vector<Column *> columns = schema->GetColumns(0);
     std::vector<IndexInfo *> tmp;
     catalog->GetTableIndexes(tableName, tmp);
-    IndexInfo *index;
     Row newTuple = GenerateUpdatedTuple(*row); // 获取更新的新元组
 
-    for(auto it : tmp)
+    for(auto index : tmp)
     {
-      if(catalog->GetIndex(tableName, it->GetIndexName(), index) == dberr_t::DB_SUCCESS) {
-        for (auto it2 : columns)
-        {
-          uint32_t col;
-          schema->GetColumnIndex(it2->GetName(), col);
-          std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
-          if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
-            Row tmpRow, removal;
-            std::vector<RowId> result;
-            newTuple.GetKeyFromRow(schema, index->GetIndexKeySchema(), tmpRow);
-            row->GetKeyFromRow(schema, index->GetIndexKeySchema(), removal);
-            index->GetIndex()->ScanKey(tmpRow, result, nullptr);
-            if(result.empty())
-            {
-              tableHeap->MarkDelete(*rid, nullptr);
-              tableHeap->ApplyDelete(*rid, nullptr);
-              tableHeap->InsertTuple(newTuple, nullptr);
-              index->GetIndex()->InsertEntry(tmpRow, newTuple.GetRowId(), nullptr);
-              index->GetIndex()->RemoveEntry(removal, *rid, nullptr);
-              // cout << "Index affected." << endl;
+      for (auto it2 : columns)
+      {
+        uint32_t col;
+        schema->GetColumnIndex(it2->GetName(), col);
+        std::vector<uint32_t> kMap = index->GetMeta()->GetKeyMapping();
+        if(find(kMap.begin(), kMap.end(), col) != kMap.end()) {
+          Row tmpRow, removal;
+          std::vector<RowId> result;
+          newTuple.GetKeyFromRow(schema, index->GetIndexKeySchema(), tmpRow);
+          row->GetKeyFromRow(schema, index->GetIndexKeySchema(), removal);
+          index->GetIndex()->ScanKey(tmpRow, result, nullptr);
+          if(result.empty())
+          {
+            tableHeap->MarkDelete(*rid, nullptr);
+            tableHeap->ApplyDelete(*rid, nullptr);
+            tableHeap->InsertTuple(newTuple, nullptr);
+            index->GetIndex()->InsertEntry(tmpRow, newTuple.GetRowId(), nullptr);
+            index->GetIndex()->RemoveEntry(removal, *rid, nullptr);
+            // cout << "Index affected." << endl;
 
-              return true;
-            }
-            else
-            {
-              // cout << "Error: updated tuples violated primary/unique key attribute." << endl;
-              return false;
-            }
+            return true;
+          }
+          else
+          {
+            // cout << "Error: updated tuples violated primary/unique key attribute." << endl;
+            return false;
           }
         }
       }
